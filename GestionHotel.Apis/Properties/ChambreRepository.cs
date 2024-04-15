@@ -10,6 +10,16 @@ namespace GestionHotel.Infrastructure.Repository
 
     public class ChambreRepository : IChambreRepository
     {
-        // Implémentation de l'accès aux données des chambres
+        private readonly ApplicationDbContext _context; // Supposons que ApplicationDbContext est votre contexte de base de données
+
+        public ChambreRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public Chambre GetChambreById(int id)
+        {
+            return _context.Chambres.Find(id);
+        }
     }
 }

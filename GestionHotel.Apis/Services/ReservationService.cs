@@ -85,7 +85,7 @@ namespace GestionHotel.Apis.Services
 
             // Mettre à jour le statut de la réservation
             reservation.StatutPaiement = false;
-            reservation.EstAnnulee = true; // Assurez-vous que le modèle de réservation a un champ pour marquer comme annulée
+            reservation.EstAnnulee = true;
             _reservationRepository.UpdateReservation(reservation);
         }
 

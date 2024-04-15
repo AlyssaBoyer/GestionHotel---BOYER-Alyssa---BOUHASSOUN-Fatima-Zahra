@@ -1,3 +1,5 @@
+using GestionHotel.Apis.Models;
+
 namespace GestionHotel.Apis.Services
 {
     public class NotificationService : INotificationService

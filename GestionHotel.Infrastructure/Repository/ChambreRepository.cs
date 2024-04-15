@@ -53,5 +53,23 @@ public class ChambreRepository : IChambreRepository
             // Implémentation pour supprimer une chambre
             _chambres.Remove(chambre);
         }
+        public List<ChambreEtat> GetChambresDisponiblesAvecEtat(DateTime dateDebut, DateTime dateFin)
+        {
+            // Implémentation pour obtenir la liste des chambres disponibles avec l'état général de la chambre
+            var chambresDisponibles = new List<ChambreEtat>();
+
+            // Supposez que cette méthode récupère les chambres disponibles à partir d'une source de données
+            var chambres = GetChambresDisponibles(DateTime debut, DateTime fin);
+
+            // Pour chaque chambre disponible, attribuez un état général (par exemple, aléatoire ici pour un exemple)
+            var random = new Random();
+            foreach (var chambre in chambres)
+            {
+                var etat = (EtatGeneralChambre)random.Next(0, Enum.GetValues(typeof(EtatGeneralChambre)).Length);
+                chambresDisponibles.Add(new ChambreEtat { Chambre = chambre, EtatGeneral = etat });
+            }
+
+            return chambresDisponibles;
+        }
     }
 }

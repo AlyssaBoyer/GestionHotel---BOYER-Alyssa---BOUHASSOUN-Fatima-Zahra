@@ -1,10 +1,5 @@
 namespace GestionHotel.Apis.Services
 {
-    public interface INotificationService
-    {
-        void EnvoyerNotification(string destinataire, string message);
-    }
-
     public class NotificationService : INotificationService
     {
         public void EnvoyerNotification(string destinataire, string message)

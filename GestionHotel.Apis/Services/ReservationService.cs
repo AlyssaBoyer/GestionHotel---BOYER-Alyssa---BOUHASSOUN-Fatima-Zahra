@@ -1,5 +1,6 @@
 using System;
 using GestionHotel.Apis.Models;
+using GestionHotel.Apis.Repositories;
 using GestionHotel.Externals.PaiementGateways;
 
 namespace GestionHotel.Apis.Services
@@ -13,11 +14,13 @@ namespace GestionHotel.Apis.Services
     public class ReservationService : IReservationService
     {
         private readonly ReservationRepository _reservationRepository;
+        private readonly IChambreRepository _chambreRepository;
         private readonly PaiementService _paiementService;
 
-        public ReservationService(ReservationRepository reservationRepository, PaiementService paiementService)
+        public ReservationService(ReservationRepository reservationRepository,IChambreRepository chambreRepository, PaiementService paiementService)
         {
             _reservationRepository = reservationRepository;
+            _chambreRepository = chambreRepository;
             _paiementService = paiementService;
         }
 
@@ -62,6 +65,11 @@ namespace GestionHotel.Apis.Services
             // Implémenter la logique de calcul du montant en fonction des dates et des tarifs de la chambre
             // Cette logique peut être basée sur différents critères tels que la durée du séjour, le tarif de la chambre, etc.
             return 0; // Retourne un montant factice pour l'exemple
+        }
+        // Ajoutez une méthode pour récupérer les chambres réservées entre les dates données
+        public IEnumerable<Chambre> GetChambresReservees(DateTime debut, DateTime fin)
+        {
+            return _reservationRepository.GetChambresReserveesEntreDates(debut, fin);
         }
     }
 }

@@ -13,8 +13,8 @@ namespace GestionHotel.Services
             // Initialisation des utilisateurs (pour l'exemple)
             utilisateurs = new Dictionary<string, Client>
             {
-                {"utilisateur1", new Client { NomUtilisateur = "utilisateur1", MotDePasse = "motdepasse1" }},
-                {"utilisateur2", new Client { NomUtilisateur = "utilisateur2", MotDePasse = "motdepasse2" }},
+                {"utilisateur1", new Client { Nom = "utilisateur1", MotPasse = "motdepasse1" }},
+                {"utilisateur2", new Client { Nom = "utilisateur2", MotPasse = "motdepasse2" }},
                 // Ajouter d'autres utilisateurs au besoin
             };
         }
@@ -22,14 +22,14 @@ namespace GestionHotel.Services
         public bool Authentifier(Client client)
         {
             // Vérifie si le client existe dans le dictionnaire et si le mot de passe correspond
-            if (utilisateurs.ContainsKey(client.NomUtilisateur) && utilisateurs[client.NomUtilisateur].MotDePasse == client.MotDePasse)
+            if (utilisateurs.ContainsKey(client.Nom) && utilisateurs[client.Nom].MotPasse == client.MotPasse)
             {
-                Console.WriteLine($"L'utilisateur {client.NomUtilisateur} est authentifié avec succès.");
+                Console.WriteLine($"L'utilisateur {client.Nom} est authentifié avec succès.");
                 return true;
             }
             else
             {
-                Console.WriteLine($"L'authentification de l'utilisateur {client.NomUtilisateur} a échoué.");
+                Console.WriteLine($"L'authentification de l'utilisateur {client.Nom} a échoué.");
                 return false;
             }
         }

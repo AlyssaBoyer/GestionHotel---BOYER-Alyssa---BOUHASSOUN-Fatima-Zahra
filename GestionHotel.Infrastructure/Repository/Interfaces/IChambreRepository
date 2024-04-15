@@ -1,0 +1,11 @@
+using GestionHotel.Apis.Models;
+using System.Collections.Generic;
+
+namespace GestionHotel.Infrastructure.Repository.Interfaces
+{
+    public interface IChambreRepository
+    {
+        Chambre GetChambreById(int id);
+        List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin);
+    }
+}

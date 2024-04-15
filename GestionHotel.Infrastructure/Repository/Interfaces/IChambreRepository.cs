@@ -5,7 +5,10 @@ namespace GestionHotel.Apis.Services
 {
     public interface IChambreRepository
     {
-        IEnumerable<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin);
-        // Autres méthodes de manipulation des chambres
+        Chambre GetChambreById(int id);
+        List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin);
+        void AddChambre(Chambre chambre);
+        void UpdateChambre(Chambre chambre);
+        void RemoveChambre(Chambre chambre);
     }
 }

@@ -9,6 +9,6 @@ namespace GestionHotel.Apis.Services
         void AddReservation(Reservation reservation);
         void RemoveReservation(Reservation reservation);
         IEnumerable<Reservation> GetReservationsByDateRange(DateTime debut, DateTime fin);
-        // Autres méthodes de manipulation des réservations
+
     }
 }

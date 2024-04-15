@@ -11,5 +11,6 @@ namespace GestionHotel.Apis.Models
         public DateTime DateDebut { get; set; }
         public DateTime DateFin { get; set; }
         public bool StatutPaiement { get; set; }
+        public bool EstAnnulee { get; set; }
     }
 }

@@ -62,9 +62,15 @@ namespace GestionHotel.Apis.Services
             // Implémentation de l'annulation de réservation
         }
 
-        public List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin)
+        private decimal CalculerMontantReservation(Chambre chambre, DateTime debut, DateTime fin)
         {
-            // Implémentation pour obtenir les chambres disponibles
+            // Calculer la durée du séjour en jours
+            int dureeSejour = (int)(fin - debut).TotalDays;
+
+            // Calculer le montant total en multipliant la durée du séjour par le tarif de la chambre
+            decimal montantTotal = dureeSejour * chambre.Tarif;
+
+            return montantTotal;
         }
-    }
+     }
 }

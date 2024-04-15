@@ -59,12 +59,17 @@ namespace GestionHotel.Apis.Services
 
         public void AnnulerReservation(Reservation reservation)
         {
-            // Implémentation de l'annulation de réservation
-        }
+            // Vérifier si la réservation est déjà annulée
+            if (reservation == null || reservation.EstAnnulee)
+            {
+                // Si la réservation est déjà annulée, rien à faire
+                return;
+            }
+            // Marquer la réservation comme annulée
+            reservation.EstAnnulee = true;
 
-        public List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin)
-        {
-            // Implémentation pour obtenir les chambres disponibles
+            // Mettre à jour le statut de paiement à false
+            reservation.StatutPaiement = false;
         }
     }
 }

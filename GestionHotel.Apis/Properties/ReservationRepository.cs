@@ -4,6 +4,8 @@ namespace GestionHotel.Infrastructure.Repository
 {
     public interface IReservationRepository
     {
+        void AddReservation(Reservation reservation);
+        void RemoveReservation(Reservation reservation);
         Reservation GetReservationById(int id);
         IEnumerable<Chambre> GetChambresReserveesEntreDates(DateTime debut, DateTime fin);
         // Autres méthodes de manipulation des données des réservations
@@ -17,6 +19,16 @@ namespace GestionHotel.Infrastructure.Repository
         {
             _reservations = new List<Reservation>();
             // Initialiser la liste des réservations avec des données fictives ou récupérées de la base de données
+        }
+        public void AddReservation(Reservation reservation)
+        {
+            // Ajouter la nouvelle réservation à la liste des réservations
+            _reservations.Add(reservation);
+        }
+        public void RemoveReservation(Reservation reservation)
+        {
+            // Supprimer la réservation de la liste des réservations
+            _reservations.Remove(reservation);
         }
         public IEnumerable<Chambre> GetChambresReserveesEntreDates(DateTime debut, DateTime fin)
         {

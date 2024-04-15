@@ -1,31 +1,35 @@
 using System;
 using System.Collections.Generic;
+using GestionHotel.Models;
 
 namespace GestionHotel.Services
 {
     public class AuthentificationService
     {
-        private Dictionary<string, string> utilisateurs;
+        private Dictionary<string, Client> utilisateurs;
 
         public AuthentificationService()
         {
-            utilisateurs = new Dictionary<string, string>
+            // Initialisation des utilisateurs (pour l'exemple)
+            utilisateurs = new Dictionary<string, Client>
             {
-                {"utilisateur1", "motdepasse1"},
-                {"utilisateur2", "motdepasse2"},
+                {"utilisateur1", new Client { NomUtilisateur = "utilisateur1", MotDePasse = "motdepasse1" }},
+                {"utilisateur2", new Client { NomUtilisateur = "utilisateur2", MotDePasse = "motdepasse2" }},
+                // Ajouter d'autres utilisateurs au besoin
             };
         }
 
-        public bool Authentifier(string nomUtilisateur, string motDePasse)
+        public bool Authentifier(Client client)
         {
-            if (utilisateurs.ContainsKey(nomUtilisateur) && utilisateurs[nomUtilisateur] == motDePasse)
+            // Vérifie si le client existe dans le dictionnaire et si le mot de passe correspond
+            if (utilisateurs.ContainsKey(client.NomUtilisateur) && utilisateurs[client.NomUtilisateur].MotDePasse == client.MotDePasse)
             {
-                Console.WriteLine($"L'utilisateur {nomUtilisateur} est authentifié avec succès.");
+                Console.WriteLine($"L'utilisateur {client.NomUtilisateur} est authentifié avec succès.");
                 return true;
             }
             else
             {
-                Console.WriteLine($"L'authentification de l'utilisateur {nomUtilisateur} a échoué.");
+                Console.WriteLine($"L'authentification de l'utilisateur {client.NomUtilisateur} a échoué.");
                 return false;
             }
         }

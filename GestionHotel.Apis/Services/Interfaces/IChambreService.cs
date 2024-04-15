@@ -4,5 +4,6 @@ namespace GestionHotel.Apis.Services.Interfaces
     {
         Chambre GetChambreById(int id);
         List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin);
+        List<ChambreEtat> GetChambresDisponiblesAvecEtat(DateTime dateDebut, DateTime dateFin);
     }
 }

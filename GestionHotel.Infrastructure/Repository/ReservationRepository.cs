@@ -6,30 +6,31 @@ namespace GestionHotel.Apis.Services
 {
     public class ReservationRepository : IReservationRepository
     {
+        private readonly IReservationRepository _reservationRepository;
+
+        public ReservationService(IReservationRepository reservationRepository)
+        {
+            _reservationRepository = reservationRepository;
+        }
+
         public void AddReservation(Reservation reservation)
         {
-            // Implémentation pour ajouter une réservation à la base de données
-            throw new NotImplementedException();
+             _reservationRepository.Add(reservation);
         }
 
         public Reservation GetReservationById(int id)
         {
-            // Implémentation pour obtenir une réservation par son identifiant depuis la base de données
-            throw new NotImplementedException();
+           return _reservationRepository.GetById(id);
         }
 
         public IEnumerable<Reservation> GetReservationsByDateRange(DateTime debut, DateTime fin)
         {
-            // Implémentation pour obtenir les réservations pour une plage de dates donnée depuis la base de données
-            throw new NotImplementedException();
+            return _reservationRepository.GetByDateRange(debut, fin);
         }
 
         public void RemoveReservation(Reservation reservation)
         {
-            // Implémentation pour supprimer une réservation de la base de données
-            throw new NotImplementedException();
+            _reservationRepository.Remove(reservation);
         }
-
-        // Autres méthodes de manipulation des réservations peuvent être implémentées ici
     }
 }

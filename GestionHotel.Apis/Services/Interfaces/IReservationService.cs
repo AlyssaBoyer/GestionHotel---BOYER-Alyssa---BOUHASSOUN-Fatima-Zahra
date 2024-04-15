@@ -7,5 +7,6 @@ namespace GestionHotel.Apis.Services.Interfaces
         Reservation ReserverChambre(Client client, Chambre chambre, DateTime debut, DateTime fin, string numeroCarteCredit);
         void AnnulerReservation(Reservation reservation);
         List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin);
+        
     }
 }

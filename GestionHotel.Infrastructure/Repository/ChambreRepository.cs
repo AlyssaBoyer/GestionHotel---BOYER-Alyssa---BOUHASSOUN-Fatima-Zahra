@@ -15,4 +15,4 @@ namespace GestionHotel.Apis.Services
 
         // Autres méthodes de manipulation des chambres peuvent être implémentées ici
     }
-}
+}w

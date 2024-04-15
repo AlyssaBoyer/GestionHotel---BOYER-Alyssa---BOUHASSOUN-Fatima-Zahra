@@ -54,8 +54,4 @@ public class ChambreRepository : IChambreRepository
             _chambres.Remove(chambre);
         }
     }
-<<<<<<< HEAD
 }
-=======
-}w
->>>>>>> 2cd78c715c009c26c5b7ebfa4a99fd9b0cb2561d

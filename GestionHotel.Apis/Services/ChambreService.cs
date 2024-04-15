@@ -1,15 +1,16 @@
-using GestionHotel.Apis.Models.Entities;
 using GestionHotel.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
+using GestionHotel.Apis.Services.Interfaces;
+using GestionHotel.Models;
 
 namespace GestionHotel.Apis.Services
 {
     public class ChambreService : IChambreService
     {
-        private readonly IChambreRepository _chambreRepository;
+        private readonly ChambreRepository _chambreRepository;
 
-        public ChambreService(IChambreRepository chambreRepository)
+        public ChambreService(ChambreRepository chambreRepository)
         {
             _chambreRepository = chambreRepository;
         }

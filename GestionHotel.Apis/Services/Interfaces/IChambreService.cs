@@ -1,3 +1,5 @@
+using GestionHotel.Models;
+
 namespace GestionHotel.Apis.Services.Interfaces
 {
     public interface IChambreService

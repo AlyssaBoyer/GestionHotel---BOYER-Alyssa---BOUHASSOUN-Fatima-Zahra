@@ -1,17 +1,35 @@
-using GestionHotel.Apis.Models
+using GestionHotel.Apis.Models;
+using GestionHotel.Apis.Services.Interfaces;
 using GestionHotel.Infrastructure.Repository;
+using GestionHotel.Models;
 
 namespace GestionHotel.Apis.Services
 {
-    public class ReservationService : IReservationService
+    public class ReservationService 
     {
-        private readonly IChambreRepository _chambreRepository;
+        private readonly ChambreRepository _chambreRepository;
+        private readonly PaiementService _paiementService;
+        private readonly ReservationRepository _reservationRepository;
         // Autres dépendances injectées
 
-        public ReservationService(IChambreRepository chambreRepository)
+        public ReservationService(ChambreRepository chambreRepository, PaiementService paiementService, ReservationRepository reservationRepository)
         {
             _chambreRepository = chambreRepository;
+            _paiementService = paiementService;
+            _reservationRepository = reservationRepository;
             // Initialisation d'autres dépendances
+        }
+        
+        public decimal CalculerMontantReservation(Chambre chambre, DateTime debut, DateTime fin)
+        {
+            // Calculer la durée du séjour en jours
+            TimeSpan dureeSejour = fin - debut;
+            int nombreJours = dureeSejour.Days;
+
+            // Calculer le montant total en fonction du tarif journalier de la chambre
+            decimal montantTotal = chambre.Tarif * nombreJours;
+
+            return montantTotal;
         }
 
         public Reservation ReserverChambre(Client client, Chambre chambre, DateTime debut, DateTime fin, string numeroCarteCredit)
@@ -60,13 +78,13 @@ namespace GestionHotel.Apis.Services
         public void AnnulerReservation(Reservation reservation)
         {
             // Vérifier si la réservation est déjà annulée
-            if (reservation == null || reservation.EstAnnulee)
+            if (reservation == null || reservation.ChambreReservee.Etat == false)
             {
                 // Si la réservation est déjà annulée, rien à faire
                 return;
             }
             // Marquer la réservation comme annulée
-            reservation.EstAnnulee = true;
+            reservation.ChambreReservee.Etat = false;
 
             // Mettre à jour le statut de paiement à false
             reservation.StatutPaiement = false;

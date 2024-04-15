@@ -1,6 +1,6 @@
 using System;
 
-namespace GestionHotel.Models
+namespace GestionHotel.Models;
 
    public class Chambre
     {
@@ -9,5 +9,5 @@ namespace GestionHotel.Models
         public string Type { get; set; }
         public decimal Tarif { get; set; }
         public int Capacite { get; set; }
-        public EtatChambre Etat { get; set; }
+        public bool Etat { get; set; }
     }

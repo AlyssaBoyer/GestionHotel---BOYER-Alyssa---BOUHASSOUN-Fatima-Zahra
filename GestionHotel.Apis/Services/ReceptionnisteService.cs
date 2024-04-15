@@ -1,10 +1,13 @@
 using GestionHotel.Apis.Models;
+using GestionHotel.Apis.Services.Interfaces;
+using GestionHotel.Infrastructure.Repository;
+using GestionHotel.Models;
 
 namespace GestionHotel.Apis.Services
 {
     public class ReceptionnisteService
     {
-        private readonly IReservationRepository _reservationRepository;
+        /*private readonly IReservationRepository _reservationRepository;
         private readonly IChambreRepository _chambreRepository;
         private readonly PaiementService _paiementService;
         private readonly INotificationService _notificationService;
@@ -82,6 +85,6 @@ namespace GestionHotel.Apis.Services
         {
             // Implémentation pour envoyer un email post-séjour au client
             throw new NotImplementedException();
-        }
+        }*/
     }
 }

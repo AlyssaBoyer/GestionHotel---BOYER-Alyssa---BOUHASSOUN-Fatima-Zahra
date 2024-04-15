@@ -65,10 +65,8 @@ namespace GestionHotel.Apis.Services
                 // Si la réservation est déjà annulée, rien à faire
                 return;
             }
-            // Marquer la réservation comme annulée
-            reservation.EstAnnulee = true;
-
-<<<<<<< HEAD
+            
+        }
         private decimal CalculerMontantReservation(Chambre chambre, DateTime debut, DateTime fin)
         {
             // Calculer la durée du séjour en jours
@@ -78,10 +76,7 @@ namespace GestionHotel.Apis.Services
             decimal montantTotal = dureeSejour * chambre.Tarif;
 
             return montantTotal;
-=======
-            // Mettre à jour le statut de paiement à false
-            reservation.StatutPaiement = false;
->>>>>>> facc839777fafb314ef1d3ab2b3c5a7e24765f06
+
         }
      }
 }

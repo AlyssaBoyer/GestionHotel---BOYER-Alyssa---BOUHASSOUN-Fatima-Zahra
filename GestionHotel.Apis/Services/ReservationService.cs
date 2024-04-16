@@ -92,13 +92,13 @@ namespace GestionHotel.Apis.Services
             TimeSpan differenceJours = reservation.DateDebut - DateTime.Now;
             if (differenceJours.TotalDays > 7)
             {
-                // Remboursement complet si l'annulation est faite plus de 7 jours avant
-                // _paiementService.ProcessRefund(reservation.Client, reservation.Montant);
+                 Remboursement complet si l'annulation est faite plus de 7 jours avant
+                 _paiementService.ProcessRefund(reservation.Client, reservation.Montant);
             }
             else if (differenceJours.TotalDays > 1)
             {
                 // Remboursement à 50% si l'annulation est faite entre 1 et 7 jours avant
-                // _paiementService.ProcessRefund(reservation.Client, reservation.Montant * 0.5);
+                 _paiementService.ProcessRefund(reservation.Client, reservation.Montant * 0.5);
             }
             else
             {

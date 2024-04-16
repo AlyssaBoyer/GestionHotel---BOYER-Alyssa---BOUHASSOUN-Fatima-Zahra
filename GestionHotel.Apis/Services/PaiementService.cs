@@ -10,5 +10,12 @@ namespace GestionHotel.Apis.Services
 
             return true;
         }
+
+        public void ProcessRefund(Client client, decimal montantRemboursement)
+        {
+            // Implémentation de la logique de remboursement
+            // Par exemple, enregistrer un remboursement dans un système externe, envoyer un e-mail de confirmation, etc.
+            Console.WriteLine($"Remboursement de {montantRemboursement}€ effectué pour le client {client.Nom} {client.Prenom}");
+        }
     }
 }

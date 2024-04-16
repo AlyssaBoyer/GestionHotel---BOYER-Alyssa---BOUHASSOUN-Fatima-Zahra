@@ -75,6 +75,29 @@ namespace GestionHotel.Apis.Services
             return reservation;
         }
 
+         public void GererArrivee(Reservation reservation)
+        {
+            // Vérifier les autorisations du réceptionniste
+            if (!_authService.IsReceptionniste())
+            {
+                throw new UnauthorizedAccessException("Seul le réceptionniste peut gérer l'arrivée.");
+            }
+
+            // Marquer la chambre comme occupée
+            reservation.Chambre.Etat = "Occupée";
+
+            // Gérer les paiements non effectués
+            if (!reservation.PaiementEffectue)
+            {
+                // Si le paiement n'a pas été effectué, tentez à nouveau de traiter le paiement
+                _paiementService.ProcessPayment(reservation.Client.NumeroCarteCredit, reservation.Montant);
+                reservation.PaiementEffectue = true; // Marquer le paiement comme effectué
+            }
+
+            // Mettre à jour la réservation dans le repository
+            _reservationRepository.UpdateReservation(reservation);
+        }
+
         public void AnnulerReservation(Reservation reservation)
         {
             // Vérifier si la réservation est déjà annulée

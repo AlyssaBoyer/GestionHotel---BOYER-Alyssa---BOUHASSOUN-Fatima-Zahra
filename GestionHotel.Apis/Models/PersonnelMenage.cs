@@ -1,3 +1,4 @@
+
 namespace GestionHotel.Models
 {
     public class PersonnelMenage

@@ -3,7 +3,7 @@ using GestionHotel.Apis.Models;
 
 namespace GestionHotel.Infrastructure.Repository
 {
-    public class PersonnelMenageRepository : IPersonnelMénageRepository
+    public class PersonnelMenageRepository : IPersonnelMenageRepository
     {
         // Simulons une liste de chambres pour l'exemple
         private List<Chambre> _chambres = new List<Chambre>

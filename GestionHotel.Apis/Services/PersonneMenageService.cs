@@ -6,21 +6,21 @@ namespace GestionHotel.Apis.Services
 {
     public class PersonnelMenageService
     {
-        private readonly IPersonnelMénageRepository _personnelMénageRepository;
+        private readonly IPersonnelMenageRepository _personnelMenageRepository;
 
-        public PersonnelMénageService(IPersonnelMénageRepository personnelMénageRepository)
+        public PersonnelMenageService(IPersonnelMenageRepository personnelMenageRepository)
         {
-            _personnelMénageRepository = personnelMénageRepository;
+            _personnelMénageRepository = personnelMenageRepository;
         }
 
         public List<Chambre> GetChambresANettoyer()
         {
-            return _personnelMénageRepository.GetChambresANettoyer();
+            return _personnelMenageRepository.GetChambresANettoyer();
         }
 
         public void MarquerChambreCommeNettoyee(int chambreId)
         {
-            _personnelMénageRepository.MarquerChambreCommeNettoyee(chambreId);
+            _personnelMenageRepository.MarquerChambreCommeNettoyee(chambreId);
         }
     }
 }

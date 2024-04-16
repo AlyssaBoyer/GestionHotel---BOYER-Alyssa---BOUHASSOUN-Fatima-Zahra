@@ -12,12 +12,12 @@ namespace GestionHotel.Apis.Services
         private readonly ReservationRepository _reservationRepository;
         // Autres dépendances injectées
 
-        public ReservationService(ChambreRepository chambreRepository, PaiementService paiementService, ReservationRepository reservationRepository)
+        public ReservationService(ChambreRepository chambreRepository, PaiementService paiementService, ReservationRepository reservationRepository, IAuthentificationService authentificationService)
         {
             _chambreRepository = chambreRepository;
             _paiementService = paiementService;
             _reservationRepository = reservationRepository;
-            // Initialisation d'autres dépendances
+            _authentificationService = authentificationService;
         }
         
         public decimal CalculerMontantReservation(Chambre chambre, DateTime debut, DateTime fin)
@@ -32,9 +32,36 @@ namespace GestionHotel.Apis.Services
             return montantTotal;
         }
 
-        public Reservation ReserverChambre(Client client, Chambre chambre, DateTime debut, DateTime fin, string numeroCarteCredit)
+        public Reservation ReserverChambre(Client client, Chambre chambre, DateTime debut, DateTime fin, string numeroCarteCredit, string username, string password)
         {
-                      // Vérifier si la chambre est disponible pour la plage de dates donnée
+            // Authentifier l'utilisateur
+            bool isAuthenticated = _authentificationService.Authentifier(username, password);
+            if (!isAuthenticated)
+            {
+                throw new UnauthorizedAccessException("L'utilisateur n'est pas authentifié.");
+            }
+            // Obtenir les rôles de l'utilisateur
+            string[] roles = _authentificationService.ObtenirRoles(username);
+            
+            // Vérifier les rôles pour décider du traitement
+            foreach (var role in roles)
+            {
+                switch (role)
+                {
+                    case "Client":
+                        // Logique pour la réservation d'une chambre par un client
+                        // Vous pouvez appeler une méthode spécifique pour la réservation par le client
+                        break;
+                    case "Receptionniste":
+                        // Logique pour la réservation d'une chambre par un réceptionniste
+                        // Vous pouvez appeler une méthode spécifique pour la réservation par le réceptionniste
+                        break;
+                    default:
+                        throw new InvalidOperationException("Rôle utilisateur non reconnu.");
+                }
+            }
+            
+            // Vérifier si la chambre est disponible pour la plage de dates donnée
             var chambresDisponibles = _chambreRepository.GetChambresDisponibles(debut, fin);
             bool chambreDisponible = false;
             foreach (var chambreDispo in chambresDisponibles)

@@ -1,37 +1,83 @@
 using System;
 using System.Collections.Generic;
-using GestionHotel.Models;
+using GestionHotel.Apis.Models;
 
-namespace GestionHotel.Services
+namespace GestionHotel.Apis.Services
 {
-    public class AuthentificationService
+    public class AuthentificationService : IAuthentificationService
     {
-        private Dictionary<string, Client> utilisateurs;
+        private readonly Dictionary<string, string> clients; // Dictionnaire des clients (Nom, Mot de passe)
+        private readonly Dictionary<string, string> receptionnistes; // Dictionnaire des réceptionnistes (Nom, Mot de passe)
 
         public AuthentificationService()
         {
             // Initialisation des utilisateurs (pour l'exemple)
-            utilisateurs = new Dictionary<string, Client>
+            clients = new Dictionary<string, string>
             {
-                {"utilisateur1", new Client { Nom = "utilisateur1", MotPasse = "motdepasse1" }},
-                {"utilisateur2", new Client { Nom = "utilisateur2", MotPasse = "motdepasse2" }},
-                // Ajouter d'autres utilisateurs au besoin
+                {"client1", "password1"},
+                {"client2", "password2"},
+                // Ajouter d'autres clients au besoin
+            };
+
+            // Initialisation des réceptionnistes (pour l'exemple)
+            receptionnistes = new Dictionary<string, string>
+            {
+                {"receptionniste1", "password1"},
+                {"receptionniste2", "password2"},
+                // Ajouter d'autres réceptionnistes au besoin
             };
         }
 
-        public bool Authentifier(Client client)
+        public bool AuthentifierClient(Client client)
         {
             // Vérifie si le client existe dans le dictionnaire et si le mot de passe correspond
-            if (utilisateurs.ContainsKey(client.Nom) && utilisateurs[client.Nom].MotPasse == client.MotPasse)
+            if (clients.ContainsKey(client.Nom) && clients[client.Nom] == client.MotPasse)
             {
-                Console.WriteLine($"L'utilisateur {client.Nom} est authentifié avec succès.");
+                Console.WriteLine($"Le client {client.Nom} est authentifié avec succès.");
                 return true;
             }
             else
             {
-                Console.WriteLine($"L'authentification de l'utilisateur {client.Nom} a échoué.");
+                Console.WriteLine($"L'authentification du client {client.Nom} a échoué.");
                 return false;
             }
         }
+
+        public bool AuthentifierReceptionniste(Receptionniste receptionniste)
+        {
+            // Vérifie si le réceptionniste existe dans le dictionnaire et si le mot de passe correspond
+            if (receptionnistes.ContainsKey(receptionniste.Nom) && receptionnistes[receptionniste.Nom] == receptionniste.MotPasse)
+            {
+                Console.WriteLine($"Le réceptionniste {receptionniste.Nom} est authentifié avec succès.");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"L'authentification du réceptionniste {receptionniste.Nom} a échoué.");
+                return false;
+            }
+        }
+        public string[] ObtenirRoles(string username)
+        {
+            // Logique pour obtenir les rôles de l'utilisateur
+            // Par exemple, vous pouvez accéder à une base de données ou à un autre système pour obtenir les rôles de l'utilisateur
+            // Pour cet exemple, nous allons retourner des rôles factices
+            if (utilisateurs.ContainsKey(username))
+            {
+                // Vérifie le type d'utilisateur
+                if (utilisateurs[username] is Client)
+                {
+                    return new string[] { "Client" };
+                }
+                else if (utilisateurs[username] is Receptionniste)
+                {
+                    return new string[] { "Receptionniste" };
+                }
+            }
+
+            // Si l'utilisateur n'est pas trouvé ou si son type n'est pas géré, retourne un tableau vide
+            return new string[0];
+        }
+
     }
 }

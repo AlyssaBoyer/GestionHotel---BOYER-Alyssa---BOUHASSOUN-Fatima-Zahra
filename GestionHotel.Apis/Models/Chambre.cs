@@ -10,4 +10,6 @@ namespace GestionHotel.Models;
         public decimal Tarif { get; set; }
         public int Capacite { get; set; }
         public bool Etat { get; set; }
+        public bool EstNettoyee { get; set; }
+        public bool EstOccupee { get; set; }
     }

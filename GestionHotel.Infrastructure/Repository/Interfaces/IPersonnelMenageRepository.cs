@@ -3,7 +3,7 @@ using GestionHotel.Apis.Models;
 
 namespace GestionHotel.Apis.Services
 {
-    public interface IPersonnelMénageRepository
+    public interface IPersonnelMenageRepository
     {
         List<Chambre> GetChambresANettoyer();
         void MarquerChambreCommeNettoyee(int chambreId);

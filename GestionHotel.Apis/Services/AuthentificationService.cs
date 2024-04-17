@@ -8,7 +8,7 @@ namespace GestionHotel.Apis.Services
     {
         private readonly Dictionary<string, string> clients; // Dictionnaire des clients (Nom, Mot de passe)
         private readonly Dictionary<string, string> receptionnistes; // Dictionnaire des réceptionnistes (Nom, Mot de passe)
-
+        private readonly Dictionary<string, string> personnesmenage;
         public AuthentificationService()
         {
             // Initialisation des utilisateurs (pour l'exemple)
@@ -25,6 +25,13 @@ namespace GestionHotel.Apis.Services
                 {"receptionniste1", "password1"},
                 {"receptionniste2", "password2"},
                 // Ajouter d'autres réceptionnistes au besoin
+            };
+
+            personnesmenage = new Dictionary<string, string>
+            {
+                {"personnesmenage1", "password1"},
+                {"personnesmenage2", "password2"},
+                
             };
         }
 
@@ -57,6 +64,21 @@ namespace GestionHotel.Apis.Services
                 return false;
             }
         }
+
+        public bool AuthentifierPersonneMenage(PersonnelMenage personnelMenage)
+        {
+            // Vérifie si le réceptionniste existe dans le dictionnaire et si le mot de passe correspond
+            if (personnesmenage.ContainsKey(personnelMenage.Nom) && personnesmenage[personnelMenage.Nom] == personnelMenage.MotPasse)
+            {
+                Console.WriteLine($"Le personnel ménage {personnelMenage.Nom} est authentifié avec succès.");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"L'authentification du personnel ménage {personnelMenage.Nom} a échoué.");
+                return false;
+            }
+        }
         public string[] ObtenirRoles(string username)
         {
             // Logique pour obtenir les rôles de l'utilisateur
@@ -72,6 +94,9 @@ namespace GestionHotel.Apis.Services
                 else if (utilisateurs[username] is Receptionniste)
                 {
                     return new string[] { "Receptionniste" };
+                }else if (utilisateurs[username] is PersonnelMenage)
+                {
+                    return new string[] { "PersonnelMenage" };
                 }
             }
 

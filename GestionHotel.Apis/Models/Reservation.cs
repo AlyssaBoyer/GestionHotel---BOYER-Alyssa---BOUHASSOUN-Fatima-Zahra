@@ -1,7 +1,7 @@
 using System;
 using GestionHotel.Models;
 
-namespace GestionHotel.Apis.Models
+namespace GestionHotel.Models
 {
     public class Reservation
     {

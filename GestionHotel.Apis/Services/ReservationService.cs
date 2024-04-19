@@ -11,12 +11,14 @@ namespace GestionHotel.Apis.Services
         private readonly PaiementService _paiementService;
         private readonly ReservationRepository _reservationRepository;
         private readonly NotificationService _notificationService;
+        private readonly AuthentificationService _authentificationService
 
-        public ReservationService(ChambreRepository chambreRepository, PaiementService paiementService, ReservationRepository reservationRepository, IAuthentificationService authentificationService)
+        public ReservationService(ChambreRepository chambreRepository, PaiementService paiementService, ReservationRepository reservationRepository,NotificationService notificationService, IAuthentificationService authentificationService)
         {
             _chambreRepository = chambreRepository;
             _paiementService = paiementService;
             _reservationRepository = reservationRepository;
+            _notificationService = notificationService;
             _authentificationService = authentificationService;
         }
         
@@ -34,59 +36,20 @@ namespace GestionHotel.Apis.Services
 
         public Reservation ReserverChambre(Client client, Chambre chambre, DateTime debut, DateTime fin, string numeroCarteCredit, string username, string password)
         {
-            // Authentifier l'utilisateur
-            bool isAuthenticated = _authentificationService.Authentifier(username, password);
-            if (!isAuthenticated)
+            if (!_authentificationService.Authentifier(username, password))
             {
                 throw new UnauthorizedAccessException("L'utilisateur n'est pas authentifié.");
             }
-            // Obtenir les rôles de l'utilisateur
-            string[] roles = _authentificationService.ObtenirRoles(username);
-            
-            // Vérifier les rôles pour décider du traitement
-            foreach (var role in roles)
-            {
-                switch (role)
-                {
-                    case "Client":
-                        // Logique pour la réservation d'une chambre par un client
-                        // Vous pouvez appeler une méthode spécifique pour la réservation par le client
-                        break;
-                    case "Receptionniste":
-                        // Logique pour la réservation d'une chambre par un réceptionniste
-                        // Vous pouvez appeler une méthode spécifique pour la réservation par le réceptionniste
-                        break;
-                    default:
-                        throw new InvalidOperationException("Rôle utilisateur non reconnu.");
-                }
-            }
-            
-            // Vérifier si la chambre est disponible pour la plage de dates donnée
-            var chambresDisponibles = _chambreRepository.GetChambresDisponibles(debut, fin);
-            bool chambreDisponible = false;
-            foreach (var chambreDispo in chambresDisponibles)
-            {
-                if (chambreDispo.Id == chambre.Id)
-                {
-                    chambreDisponible = true;
-                    break;
-                }
-            }
-
-            if (!chambreDisponible)
+            if (!_chambreRepository.IsChambreDisponible(chambre.Id, debut, fin))
             {
                 throw new Exception("La chambre n'est pas disponible pour les dates sélectionnées.");
             }
-
-            // Effectuer le paiement
-            bool paiementEffectue = _paiementService.ProcessPayment(numeroCarteCredit, CalculerMontantReservation(chambre, debut, fin));
-
-            if (!paiementEffectue)
+            decimal montantTotal = CalculerMontantReservation(chambre, debut, fin);
+            if (!_paiementService.ProcessPayment(numeroCarteCredit, montantTotal))
             {
                 throw new Exception("Le paiement a échoué. La réservation n'a pas été effectuée.");
             }
 
-            // Créer la réservation
             var reservation = new Reservation
             {
                 Client = client,
@@ -96,32 +59,24 @@ namespace GestionHotel.Apis.Services
                 StatutPaiement = true
             };
 
-            // Enregistrer la réservation
             _reservationRepository.AddReservation(reservation);
 
             return reservation;
         }
 
+
          public void GererArrivee(Reservation reservation)
         {
-            // Vérifier les autorisations du réceptionniste
-            if (!_authService.IsReceptionniste())
+                if (!_authentificationService.IsReceptionniste())
             {
-                throw new UnauthorizedAccessException("Seul le réceptionniste peut gérer l'arrivée.");
+                 throw new UnauthorizedAccessException("Seul le réceptionniste peut gérer une arrivée.");
             }
-
-            // Marquer la chambre comme occupée
             reservation.Chambre.Etat = "Occupée";
-
-            // Gérer les paiements non effectués
             if (!reservation.PaiementEffectue)
             {
-                // Si le paiement n'a pas été effectué, tentez à nouveau de traiter le paiement
                 _paiementService.ProcessPayment(reservation.Client.NumeroCarteCredit, reservation.Montant);
-                reservation.PaiementEffectue = true; // Marquer le paiement comme effectué
+                reservation.PaiementEffectue = true;
             }
-
-            // Mettre à jour la réservation dans le repository
             _reservationRepository.UpdateReservation(reservation);
         }
 
@@ -155,6 +110,11 @@ namespace GestionHotel.Apis.Services
 
             {
                 throw new InvalidOperationException("La réservation est déjà annulée ou n'existe pas.");
+            }
+
+                if (!_authentificationService.IsReceptionniste())
+            {
+                 throw new UnauthorizedAccessException("Seul le réceptionniste peut annuler une réservation.");
             }
             reservation.ChambreReservee.Etat = false;
             TimeSpan differenceJours = reservation.DateDebut - DateTime.Now;

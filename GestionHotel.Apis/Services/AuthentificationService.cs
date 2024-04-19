@@ -24,7 +24,6 @@ namespace GestionHotel.Apis.Services
             {
                 {"receptionniste1", "password1"},
                 {"receptionniste2", "password2"},
-                // Ajouter d'autres réceptionnistes au besoin
             };
 
             personnesmenage = new Dictionary<string, string>
@@ -37,7 +36,6 @@ namespace GestionHotel.Apis.Services
 
         public bool AuthentifierClient(Client client)
         {
-            // Vérifie si le client existe dans le dictionnaire et si le mot de passe correspond
             if (clients.ContainsKey(client.Nom) && clients[client.Nom] == client.MotPasse)
             {
                 Console.WriteLine($"Le client {client.Nom} est authentifié avec succès.");
@@ -82,12 +80,8 @@ namespace GestionHotel.Apis.Services
 
         public string[] ObtenirRoles(string username)
         {
-            // Logique pour obtenir les rôles de l'utilisateur
-            // Par exemple, vous pouvez accéder à une base de données ou à un autre système pour obtenir les rôles de l'utilisateur
-            // Pour cet exemple, nous allons retourner des rôles factices
             if (utilisateurs.ContainsKey(username))
             {
-                // Vérifie le type d'utilisateur
                 if (utilisateurs[username] is Client)
                 {
                     return new string[] { "Client" };
@@ -100,8 +94,6 @@ namespace GestionHotel.Apis.Services
                     return new string[] { "PersonnelMenage" };
                 }
             }
-
-            // Si l'utilisateur n'est pas trouvé ou si son type n'est pas géré, retourne un tableau vide
             return new string[0];
         }
 

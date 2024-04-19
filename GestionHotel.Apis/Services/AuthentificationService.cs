@@ -11,15 +11,11 @@ namespace GestionHotel.Apis.Services
         private readonly Dictionary<string, string> personnesmenage;
         public AuthentificationService()
         {
-            // Initialisation des utilisateurs (pour l'exemple)
             annuaireClients = new Dictionary<string, string>
             {
                 {"client1", "password1"},
                 {"client2", "password2"},
-                // Ajouter d'autres clients au besoin
             };
-
-            // Initialisation des réceptionnistes (pour l'exemple)
             annuaireReceptionnistes = new Dictionary<string, string>
             {
                 {"receptionniste1", "password1"},

@@ -5,9 +5,26 @@ namespace GestionHotel.Apis.Services
 {
     public class NotificationService : INotificationService
     {
-        public void EnvoyerNotification(string destinataire, string message)
+    public void NotifierAnnulationTardive(Client client)
+    {
+
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("Votre Nom", "votre@email.com"));
+        message.To.Add(new MailboxAddress(client.Nom, client.Email));
+        message.Subject = "Annulation de votre réservation";
+        message.Body = new TextPart("plain")
         {
-            // Logique d'envoi de notification par email ou SMS
+            Text = $"Bonjour {client.Nom},\n\nNous vous informons que votre réservation a été annulée moins de 24 heures avant la date d'arrivée prévue. Malheureusement, aucun remboursement ne sera effectué.\n\nCordialement,\nVotre hôtel"
+        };
+
+        using (var clientSmtp = new SmtpClient())
+        {
+            clientSmtp.Connect("smtp.example.com", 587, false);
+            clientSmtp.Authenticate("username", "password");
+            clientSmtp.Send(message);
+            clientSmtp.Disconnect(true);
         }
+        */
+}
     }
 }

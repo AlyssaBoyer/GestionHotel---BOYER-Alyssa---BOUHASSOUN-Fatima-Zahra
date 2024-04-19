@@ -10,7 +10,7 @@ namespace GestionHotel.Apis.Services
         private readonly ChambreRepository _chambreRepository;
         private readonly PaiementService _paiementService;
         private readonly ReservationRepository _reservationRepository;
-        // Autres dépendances injectées
+        private readonly NotificationService _notificationService;
 
         public ReservationService(ChambreRepository chambreRepository, PaiementService paiementService, ReservationRepository reservationRepository, IAuthentificationService authentificationService)
         {
@@ -166,14 +166,13 @@ namespace GestionHotel.Apis.Services
             {
                  _paiementService.ProcessRefund(reservation.Client, reservation.Montant * 0.5);
             }
-            else
+            else if (differenceJours.TotalHours < 24)
             {
-                // Pas de remboursement si l'annulation est faite moins de 24 heures avant
-                // Vous pouvez enregistrer cette information ou notifier le client
+                _notificationService.NotifierAnnulationTardive(reservation.Client);
             }
             reservation.StatutPaiement = false;
             reservation.EstAnnulee = true;
-            // _reservationRepository.UpdateReservation(reservation);
+             _reservationRepository.UpdateReservation(reservation);
         }
      }
 }

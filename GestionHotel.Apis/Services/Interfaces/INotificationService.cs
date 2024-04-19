@@ -1,7 +1,9 @@
+sing GestionHotel.Apis.Models;
+
 namespace GestionHotel.Apis.Services.Interfaces
 {
     public interface INotificationService
     {
-        void EnvoyerNotification(string destinataire, string message);
+        void NotifierAnnulationTardive(Client client);
     }
 }

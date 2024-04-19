@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GestionHotel.Apis.Models;
 
-namespace GestionHotel.Apis.Services
+namespace GestionHotel.Apis.Services.Interfaces
 {
     public interface IPersonnelMenageService
     {

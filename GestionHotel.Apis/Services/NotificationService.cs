@@ -24,7 +24,6 @@ namespace GestionHotel.Apis.Services
             clientSmtp.Send(message);
             clientSmtp.Disconnect(true);
         }
-        */
 }
     }
 }

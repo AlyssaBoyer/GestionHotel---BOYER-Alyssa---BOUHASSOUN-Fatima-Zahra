@@ -10,7 +10,7 @@ namespace GestionHotel.Apis.Services
 
         public PersonnelMenageService(IPersonnelMenageRepository personnelMenageRepository)
         {
-            _personnelMénageRepository = personnelMenageRepository;
+            _personnelMenageRepository = personnelMenageRepository;
         }
 
         public List<Chambre> GetChambresANettoyer()

@@ -4,7 +4,7 @@ using GestionHotel.Infrastructure.Repository;
 
 namespace GestionHotel.Apis.Services
 {
-    public class PersonnelMenageService
+    public class PersonnelMenageService : IPersonnelMenageService
     {
         private readonly IPersonnelMenageRepository _personnelMenageRepository;
 

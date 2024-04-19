@@ -6,8 +6,8 @@ namespace GestionHotel.Apis.Services
 {
     public class AuthentificationService : IAuthentificationService
     {
-        private readonly Dictionary<string, string> clients; // Dictionnaire des clients (Nom, Mot de passe)
-        private readonly Dictionary<string, string> receptionnistes; // Dictionnaire des réceptionnistes (Nom, Mot de passe)
+        private readonly Dictionary<string, string> clients; 
+        private readonly Dictionary<string, string> receptionnistes; 
         private readonly Dictionary<string, string> personnesmenage;
         public AuthentificationService()
         {

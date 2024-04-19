@@ -150,27 +150,20 @@ namespace GestionHotel.Apis.Services
 
         public void AnnulerReservation(Reservation reservation)
         {
-            // Vérifier si la réservation est déjà annulée
             if (reservation == null || reservation.ChambreReservee.Etat == false)
-            // Vérifier si la réservation existe et n'est pas déjà annulée
             if (reservation == null || !reservation.StatutPaiement)
 
             {
                 throw new InvalidOperationException("La réservation est déjà annulée ou n'existe pas.");
             }
-            // Marquer la réservation comme annulée
             reservation.ChambreReservee.Etat = false;
-
-            // Vérifier les conditions de remboursement
             TimeSpan differenceJours = reservation.DateDebut - DateTime.Now;
             if (differenceJours.TotalDays > 7)
             {
-                 Remboursement complet si l'annulation est faite plus de 7 jours avant
                  _paiementService.ProcessRefund(reservation.Client, reservation.Montant);
             }
             else if (differenceJours.TotalDays > 1)
             {
-                // Remboursement à 50% si l'annulation est faite entre 1 et 7 jours avant
                  _paiementService.ProcessRefund(reservation.Client, reservation.Montant * 0.5);
             }
             else
@@ -178,8 +171,6 @@ namespace GestionHotel.Apis.Services
                 // Pas de remboursement si l'annulation est faite moins de 24 heures avant
                 // Vous pouvez enregistrer cette information ou notifier le client
             }
-
-            // Mettre à jour le statut de la réservation
             reservation.StatutPaiement = false;
             reservation.EstAnnulee = true;
             // _reservationRepository.UpdateReservation(reservation);

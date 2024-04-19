@@ -12,7 +12,7 @@ namespace GestionHotel.Apis.Services
         public AuthentificationService()
         {
             // Initialisation des utilisateurs (pour l'exemple)
-            clients = new Dictionary<string, string>
+            annuaireClients = new Dictionary<string, string>
             {
                 {"client1", "password1"},
                 {"client2", "password2"},
@@ -20,82 +20,46 @@ namespace GestionHotel.Apis.Services
             };
 
             // Initialisation des réceptionnistes (pour l'exemple)
-            receptionnistes = new Dictionary<string, string>
+            annuaireReceptionnistes = new Dictionary<string, string>
             {
                 {"receptionniste1", "password1"},
                 {"receptionniste2", "password2"},
             };
 
-            personnesmenage = new Dictionary<string, string>
+            annuairePersonnelMenage = new Dictionary<string, string>
             {
                 {"personnesmenage1", "password1"},
                 {"personnesmenage2", "password2"},
                 
             };
         }
+public bool AuthentifierClient(string nom, string motDePasse)
+    {
+        return Authentifier(nom, motDePasse, annuaireClients);
+    }
 
-        public bool AuthentifierClient(Client client)
+    public bool AuthentifierReceptionniste(string nom, string motDePasse)
+    {
+        return Authentifier(nom, motDePasse, annuaireReceptionnistes);
+    }
+
+    public bool AuthentifierPersonnelMenage(string nom, string motDePasse)
+    {
+        return Authentifier(nom, motDePasse, annuairePersonnelMenage);
+    }
+
+    private bool Authentifier(string nom, string motDePasse, Dictionary<string, string> annuaire)
+    {
+        if (annuaire.ContainsKey(nom) && annuaire[nom] == motDePasse)
         {
-            if (clients.ContainsKey(client.Nom) && clients[client.Nom] == client.MotPasse)
-            {
-                Console.WriteLine($"Le client {client.Nom} est authentifié avec succès.");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine($"L'authentification du client {client.Nom} a échoué.");
-                return false;
-            }
+            Console.WriteLine($"La personne {nom} est authentifiée avec succès.");
+            return true;
         }
-
-        public bool AuthentifierReceptionniste(Receptionniste receptionniste)
+        else
         {
-            // Vérifie si le réceptionniste existe dans le dictionnaire et si le mot de passe correspond
-            if (receptionnistes.ContainsKey(receptionniste.Nom) && receptionnistes[receptionniste.Nom] == receptionniste.MotPasse)
-            {
-                Console.WriteLine($"Le réceptionniste {receptionniste.Nom} est authentifié avec succès.");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine($"L'authentification du réceptionniste {receptionniste.Nom} a échoué.");
-                return false;
-            }
+            Console.WriteLine($"L'authentification de {nom} a échoué.");
+            return false;
         }
-
-        public bool AuthentifierPersonneMenage(PersonnelMenage personnelMenage)
-        {
-            // Vérifie si le réceptionniste existe dans le dictionnaire et si le mot de passe correspond
-            if (personnesmenage.ContainsKey(personnelMenage.Nom) && personnesmenage[personnelMenage.Nom] == personnelMenage.MotPasse)
-            {
-                Console.WriteLine($"Le personnel ménage {personnelMenage.Nom} est authentifié avec succès.");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine($"L'authentification du personnel ménage {personnelMenage.Nom} a échoué.");
-                return false;
-            }
-        }
-
-        public string[] ObtenirRoles(string username)
-        {
-            if (utilisateurs.ContainsKey(username))
-            {
-                if (utilisateurs[username] is Client)
-                {
-                    return new string[] { "Client" };
-                }
-                else if (utilisateurs[username] is Receptionniste)
-                {
-                    return new string[] { "Receptionniste" };
-                }else if (utilisateurs[username] is PersonnelMenage)
-                {
-                    return new string[] { "PersonnelMenage" };
-                }
-            }
-            return new string[0];
-        }
-
+    }
     }
 }

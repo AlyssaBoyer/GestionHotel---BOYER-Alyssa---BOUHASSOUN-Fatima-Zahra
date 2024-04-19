@@ -79,6 +79,7 @@ namespace GestionHotel.Apis.Services
                 return false;
             }
         }
+
         public string[] ObtenirRoles(string username)
         {
             // Logique pour obtenir les rôles de l'utilisateur

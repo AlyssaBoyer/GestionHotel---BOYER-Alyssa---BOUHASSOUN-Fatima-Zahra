@@ -1,36 +1,14 @@
-using GestionHotel.Apis.Models;
 using System;
 using System.Collections.Generic;
+using GestionHotel.Apis.Models;
 
-namespace GestionHotel.Apis.Services
+namespace GestionHotel.Infrastructure.Repository
 {
-    public class ReservationRepository : IReservationRepository
+    public interface IReservationRepository
     {
-        private readonly IReservationRepository _reservationRepository;
-
-        public ReservationService(IReservationRepository reservationRepository)
-        {
-            _reservationRepository = reservationRepository;
-        }
-
-        public void AddReservation(Reservation reservation)
-        {
-             _reservationRepository.Add(reservation);
-        }
-
-        public Reservation GetReservationById(int id)
-        {
-           return _reservationRepository.GetById(id);
-        }
-
-        public IEnumerable<Reservation> GetReservationsByDateRange(DateTime debut, DateTime fin)
-        {
-            return _reservationRepository.GetByDateRange(debut, fin);
-        }
-
-        public void RemoveReservation(Reservation reservation)
-        {
-            _reservationRepository.Remove(reservation);
-        }
+        void AddReservation(Reservation reservation);
+        Reservation GetReservationById(int id);
+        IEnumerable<Reservation> GetReservationsByDateRange(DateTime debut, DateTime fin);
+        void RemoveReservation(Reservation reservation);
     }
 }

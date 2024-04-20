@@ -24,11 +24,9 @@ namespace GestionHotel.Apis.Services
         
         public decimal CalculerMontantReservation(Chambre chambre, DateTime debut, DateTime fin)
         {
-            // Calculer la durée du séjour en jours
             TimeSpan dureeSejour = fin - debut;
             int nombreJours = dureeSejour.Days;
 
-            // Calculer le montant total en fonction du tarif journalier de la chambre
             decimal montantTotal = chambre.Tarif * nombreJours;
 
             return montantTotal;
@@ -82,24 +80,17 @@ namespace GestionHotel.Apis.Services
 
         public void GererDepart(Reservation reservation)
         {
-            // Vérifier les autorisations du réceptionniste
             if (!_authService.IsReceptionniste())
             {
                 throw new UnauthorizedAccessException("Seul le réceptionniste peut gérer le départ.");
             }
-
-            // Marquer la chambre pour nettoyage
             _menageService.MarquerChambrePourNettoyage(reservation.Chambre);
-
-            // Gérer les paiements restants
             if (!reservation.PaiementEffectue)
             {
-                // Si le paiement n'a pas été effectué, tentez à nouveau de traiter le paiement
                 _paiementService.ProcessPayment(reservation.Client.NumeroCarteCredit, reservation.Montant);
-                reservation.PaiementEffectue = true; // Marquer le paiement comme effectué
+                reservation.PaiementEffectue = true; 
             }
 
-            // Mettre à jour la réservation dans le repository
             _reservationRepository.UpdateReservation(reservation);
         }
 

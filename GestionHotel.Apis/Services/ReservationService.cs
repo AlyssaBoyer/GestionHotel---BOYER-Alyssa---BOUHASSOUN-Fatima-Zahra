@@ -11,7 +11,9 @@ namespace GestionHotel.Apis.Services
         private readonly PaiementService _paiementService;
         private readonly ReservationRepository _reservationRepository;
         private readonly NotificationService _notificationService;
-        private readonly AuthentificationService _authentificationService
+        private readonly AuthentificationService _authentificationService;
+        private readonly List<IObserver<Reservation>> _reservationObservers = new List<IObserver<Reservation>>();
+
 
         public ReservationService(ChambreRepository chambreRepository, PaiementService paiementService, ReservationRepository reservationRepository,NotificationService notificationService, IAuthentificationService authentificationService)
         {
@@ -21,7 +23,24 @@ namespace GestionHotel.Apis.Services
             _notificationService = notificationService;
             _authentificationService = authentificationService;
         }
-        
+        // Méthode pour ajouter un observateur à ce service de réservation
+        public void AddReservationObserver(IObserver<Reservation> observer)
+        {
+            _reservationObservers.Add(observer);
+        }
+        // Méthode pour supprimer un observateur de ce service de réservation
+        public void RemoveReservationObserver(IObserver<Reservation> observer)
+        {
+            _reservationObservers.Remove(observer);
+        }
+        // Méthode pour notifier les observateurs lorsqu'un événement pertinent se produit
+        private void NotifyReservationObservers(Reservation reservation)
+        {
+            foreach (var observer in _reservationObservers)
+            {
+                observer.Update(reservation);
+            }
+        }
         public decimal CalculerMontantReservation(Chambre chambre, DateTime debut, DateTime fin)
         {
             TimeSpan dureeSejour = fin - debut;
@@ -58,6 +77,8 @@ namespace GestionHotel.Apis.Services
             };
 
             _reservationRepository.AddReservation(reservation);
+            NotifyReservationObservers(reservation);
+            AddReservationObserver(observer);
 
             return reservation;
         }
@@ -76,6 +97,8 @@ namespace GestionHotel.Apis.Services
                 reservation.PaiementEffectue = true;
             }
             _reservationRepository.UpdateReservation(reservation);
+            NotifyReservationObservers(reservation);
+            AddReservationObserver(observer);
         }
 
         public void GererDepart(Reservation reservation)
@@ -92,6 +115,8 @@ namespace GestionHotel.Apis.Services
             }
 
             _reservationRepository.UpdateReservation(reservation);
+            NotifyReservationObservers(reservation);
+            AddReservationObserver(observer);
         }
 
         public void AnnulerReservation(Reservation reservation)
@@ -124,6 +149,9 @@ namespace GestionHotel.Apis.Services
             reservation.StatutPaiement = false;
             reservation.EstAnnulee = true;
              _reservationRepository.UpdateReservation(reservation);
+             // Notifier les observateurs de l'annulation de la réservation
+             NotifyReservationObservers(reservation);
+             AddReservationObserver(observer);
         }
      }
 }

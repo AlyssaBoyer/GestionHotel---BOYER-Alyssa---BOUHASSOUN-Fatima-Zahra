@@ -1,8 +1,6 @@
-using GestionHotel.Infrastructure.Repository;
-using System;
-using System.Collections.Generic;
+using GestionHotel.Apis.Infrastructure.Repository;
+using GestionHotel.Apis.Models;
 using GestionHotel.Apis.Services.Interfaces;
-using GestionHotel.Models;
 
 namespace GestionHotel.Apis.Services
 {
@@ -17,12 +15,17 @@ namespace GestionHotel.Apis.Services
 
         public Chambre GetChambreById(int id)
         {
-                        return _chambreRepository.GetChambreById(id);
+            return _chambreRepository.GetChambreById(id);
         }
 
         public List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin)
         {
             return _chambreRepository.GetChambresDisponibles(debut, fin);
+        }
+        
+        public bool IsChambreDisponible(int id, DateTime debut, DateTime fin)
+        {
+            return _chambreRepository.IsChambreDisponible(id, debut, fin);
         }
     }
 }

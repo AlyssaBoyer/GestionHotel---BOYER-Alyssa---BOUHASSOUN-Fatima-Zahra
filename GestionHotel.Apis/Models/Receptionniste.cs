@@ -1,5 +1,6 @@
+using GestionHotel.Apis.Models;
 using GestionHotel.Models;
-namespace GestionHotel.Models
+namespace GestionHotel.Apis.Models
 {
     public class Receptionniste : Personne
     {

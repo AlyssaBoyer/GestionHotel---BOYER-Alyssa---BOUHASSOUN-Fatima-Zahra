@@ -1,5 +1,9 @@
 using GestionHotel.Apis;
 using GestionHotel.Apis.Endpoints.Booking;
+using GestionHotel.Apis.Infrastructure.Repository;
+using GestionHotel.Apis.Infrastructure.Repository.Interfaces;
+using GestionHotel.Apis.Services;
+using GestionHotel.Apis.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +12,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<SampleInjectionInterface, SampleInjectionImplementation>();
+
+// Enregistrez vos services et repositories ici.
+builder.Services.AddScoped<IAuthentificationService, AuthentificationService>();
+builder.Services.AddScoped<IChambreService, ChambreService>();
+builder.Services.AddScoped<IPersonnelMenageService, PersonnelMenageService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
+// Enregistrez vos repositories si vous en avez créé.
+builder.Services.AddScoped<IChambreRepository, ChambreRepository>();
+builder.Services.AddScoped<IPersonnelMenageRepository, PersonnelMenageRepository>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+
 
 var app = builder.Build();
 

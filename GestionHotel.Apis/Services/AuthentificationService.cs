@@ -6,56 +6,63 @@ namespace GestionHotel.Apis.Services
 {
     public class AuthentificationService : IAuthentificationService
     {
-        private readonly Dictionary<string, string> clients; 
-        private readonly Dictionary<string, string> receptionnistes; 
-        private readonly Dictionary<string, string> personnesmenage;
+        private readonly Dictionary<string, string> annuaireClients;
+        private readonly Dictionary<string, string> annuaireReceptionnistes;
+        private readonly Dictionary<string, string> annuairePersonnelMenage;
+
         public AuthentificationService()
         {
             annuaireClients = new Dictionary<string, string>
             {
-                {"client1", "password1"},
-                {"client2", "password2"},
+                { "client1", "password1" },
+                { "client2", "password2" },
             };
             annuaireReceptionnistes = new Dictionary<string, string>
             {
-                {"receptionniste1", "password1"},
-                {"receptionniste2", "password2"},
+                { "receptionniste1", "password1" },
+                { "receptionniste2", "password2" },
             };
 
             annuairePersonnelMenage = new Dictionary<string, string>
             {
-                {"personnesmenage1", "password1"},
-                {"personnesmenage2", "password2"},
-                
+                { "personnesmenage1", "password1" },
+                { "personnesmenage2", "password2" },
             };
         }
-public bool AuthentifierClient(string nom, string motDePasse)
-    {
-        return Authentifier(nom, motDePasse, annuaireClients);
-    }
 
-    public bool AuthentifierReceptionniste(string nom, string motDePasse)
-    {
-        return Authentifier(nom, motDePasse, annuaireReceptionnistes);
-    }
-
-    public bool AuthentifierPersonnelMenage(string nom, string motDePasse)
-    {
-        return Authentifier(nom, motDePasse, annuairePersonnelMenage);
-    }
-
-    private bool Authentifier(string nom, string motDePasse, Dictionary<string, string> annuaire)
-    {
-        if (annuaire.ContainsKey(nom) && annuaire[nom] == motDePasse)
+        public bool AuthentifierClient(string nom, string motDePasse)
         {
-            Console.WriteLine($"La personne {nom} est authentifiée avec succès.");
-            return true;
+            return Authentifier(nom, motDePasse, annuaireClients);
         }
-        else
+
+        public bool AuthentifierReceptionniste(string nom, string motDePasse)
         {
-            Console.WriteLine($"L'authentification de {nom} a échoué.");
-            return false;
+            return Authentifier(nom, motDePasse, annuaireReceptionnistes);
         }
-    }
+
+        public bool AuthentifierPersonnelMenage(string nom, string motDePasse)
+        {
+            return Authentifier(nom, motDePasse, annuairePersonnelMenage);
+        }
+
+        public bool Authentifier(string nom, string motDePasse, Dictionary<string, string> annuaire)
+        {
+            if (annuaire.ContainsKey(nom) && annuaire[nom] == motDePasse)
+            {
+                Console.WriteLine($"La personne {nom} est authentifiée avec succès.");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"L'authentification de {nom} a échoué.");
+                return false;
+            }
+        }
+        
+        public bool IsReceptionniste(string idReceptionniste) // changer en int apres quand bdd 
+        {
+            // Vérifie si le nom est dans l'annuaire des réceptionnistes.
+            return annuaireReceptionnistes.ContainsKey(idReceptionniste);
+        }
     }
 }

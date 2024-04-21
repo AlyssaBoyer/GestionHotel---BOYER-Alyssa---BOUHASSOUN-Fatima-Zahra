@@ -1,6 +1,6 @@
 using System;
 
-namespace GestionHotel.Models;
+namespace GestionHotel.Apis.Models;
 
    public class Chambre
     {
@@ -11,5 +11,6 @@ namespace GestionHotel.Models;
         public int Capacite { get; set; }
         public bool Etat { get; set; }
         public bool EstNettoyee { get; set; }
+        public bool EstANettoyer { get; set; }
         public bool EstOccupee { get; set; }
     }

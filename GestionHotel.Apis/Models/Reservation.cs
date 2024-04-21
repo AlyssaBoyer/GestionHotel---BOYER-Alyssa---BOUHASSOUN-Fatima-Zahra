@@ -1,7 +1,7 @@
 using System;
 using GestionHotel.Models;
 
-namespace GestionHotel.Models
+namespace GestionHotel.Apis.Models
 {
     public class Reservation
     {
@@ -12,5 +12,6 @@ namespace GestionHotel.Models
         public DateTime DateFin { get; set; }
         public bool StatutPaiement { get; set; }
         public bool EstAnnulee { get; set; }
+        public Decimal Montant { get; set; }
     }
 }

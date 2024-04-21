@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using GestionHotel.Apis.Infrastructure.Repository;
+using GestionHotel.Apis.Infrastructure.Repository.Interfaces;
+using GestionHotel.Apis.Services.Interfaces;
 using GestionHotel.Apis.Models;
-using GestionHotel.Infrastructure.Repository;
 
 namespace GestionHotel.Apis.Services
 {
@@ -21,6 +23,11 @@ namespace GestionHotel.Apis.Services
         public void MarquerChambreCommeNettoyee(int chambreId)
         {
             _personnelMenageRepository.MarquerChambreCommeNettoyee(chambreId);
+        }
+        
+        public void MarquerChambrePourNettoyage(int chambreId)
+        {
+            _personnelMenageRepository.MarquerChambrePourNettoyage(chambreId);
         }
     }
 }

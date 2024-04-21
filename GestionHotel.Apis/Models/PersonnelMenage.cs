@@ -1,4 +1,6 @@
 
+using GestionHotel.Apis.Models;
+
 namespace GestionHotel.Models
 {
     public class PersonnelMenage : Personne

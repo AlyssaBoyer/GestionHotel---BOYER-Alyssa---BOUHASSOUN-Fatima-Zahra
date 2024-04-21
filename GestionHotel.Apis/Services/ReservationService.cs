@@ -1,44 +1,60 @@
+using GestionHotel.Apis.Infrastructure.Repository;
+using GestionHotel.Apis.Infrastructure.Repository.Interfaces;
 using GestionHotel.Apis.Models;
 using GestionHotel.Apis.Services.Interfaces;
-using GestionHotel.Infrastructure.Repository;
 using GestionHotel.Models;
 
 namespace GestionHotel.Apis.Services
 {
-    public class ReservationService 
+    public class ReservationService : IReservationService
     {
-        private readonly ChambreRepository _chambreRepository;
+        private readonly IChambreRepository _chambreRepository;
         private readonly PaiementService _paiementService;
-        private readonly ReservationRepository _reservationRepository;
+        private readonly IReservationRepository _reservationRepository;
         private readonly NotificationService _notificationService;
         private readonly AuthentificationService _authentificationService;
+        private readonly IPersonnelMenageService _menageService;
         private readonly List<IObserver<Reservation>> _reservationObservers = new List<IObserver<Reservation>>();
 
 
-        public ReservationService(ChambreRepository chambreRepository, PaiementService paiementService, ReservationRepository reservationRepository,NotificationService notificationService, IAuthentificationService authentificationService)
+        public ReservationService(IChambreRepository chambreRepository, PaiementService paiementService, IReservationRepository reservationRepository,NotificationService notificationService, AuthentificationService authentificationService, IPersonnelMenageService menageService)
         {
             _chambreRepository = chambreRepository;
             _paiementService = paiementService;
             _reservationRepository = reservationRepository;
             _notificationService = notificationService;
             _authentificationService = authentificationService;
+            _menageService = menageService;
         }
+        
+        public void AnnulerReservation(Reservation reservation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin)
+        {
+            throw new NotImplementedException();
+        }
+
         // Méthode pour ajouter un observateur à ce service de réservation
         public void AddReservationObserver(IObserver<Reservation> observer)
         {
             _reservationObservers.Add(observer);
         }
+        
         // Méthode pour supprimer un observateur de ce service de réservation
         public void RemoveReservationObserver(IObserver<Reservation> observer)
         {
             _reservationObservers.Remove(observer);
         }
+        
         // Méthode pour notifier les observateurs lorsqu'un événement pertinent se produit
         private void NotifyReservationObservers(Reservation reservation)
         {
             foreach (var observer in _reservationObservers)
             {
-                observer.Update(reservation);
+                observer.OnNext(reservation);
             }
         }
         public decimal CalculerMontantReservation(Chambre chambre, DateTime debut, DateTime fin)
@@ -53,7 +69,7 @@ namespace GestionHotel.Apis.Services
 
         public Reservation ReserverChambre(Client client, Chambre chambre, DateTime debut, DateTime fin, string numeroCarteCredit, string username, string password)
         {
-            if (!_authentificationService.Authentifier(username, password))
+            if (!_authentificationService.AuthentifierClient(username, password))
             {
                 throw new UnauthorizedAccessException("L'utilisateur n'est pas authentifié.");
             }
@@ -78,57 +94,59 @@ namespace GestionHotel.Apis.Services
 
             _reservationRepository.AddReservation(reservation);
             NotifyReservationObservers(reservation);
-            AddReservationObserver(observer);
 
             return reservation;
         }
 
 
-         public void GererArrivee(Reservation reservation)
+         public void GererArrivee(Reservation reservation, string userId)
         {
-                if (!_authentificationService.IsReceptionniste())
+                if (!_authentificationService.IsReceptionniste(userId))
             {
                  throw new UnauthorizedAccessException("Seul le réceptionniste peut gérer une arrivée.");
             }
-            reservation.Chambre.Etat = "Occupée";
-            if (!reservation.PaiementEffectue)
+            reservation.ChambreReservee.Etat = true;
+            if (!reservation.StatutPaiement)
             {
                 _paiementService.ProcessPayment(reservation.Client.NumeroCarteCredit, reservation.Montant);
-                reservation.PaiementEffectue = true;
+                reservation.StatutPaiement = true;
             }
             _reservationRepository.UpdateReservation(reservation);
             NotifyReservationObservers(reservation);
-            AddReservationObserver(observer);
         }
 
-        public void GererDepart(Reservation reservation)
+        public void GererDepart(Reservation reservation, string userId)
         {
-            if (!_authService.IsReceptionniste())
+            if (!_authentificationService.IsReceptionniste(userId))
             {
                 throw new UnauthorizedAccessException("Seul le réceptionniste peut gérer le départ.");
             }
-            _menageService.MarquerChambrePourNettoyage(reservation.Chambre);
-            if (!reservation.PaiementEffectue)
+            _menageService.MarquerChambrePourNettoyage(reservation.ChambreReservee.Id);
+            if (!reservation.StatutPaiement)
             {
                 _paiementService.ProcessPayment(reservation.Client.NumeroCarteCredit, reservation.Montant);
-                reservation.PaiementEffectue = true; 
+                reservation.StatutPaiement = true; 
             }
 
             _reservationRepository.UpdateReservation(reservation);
             NotifyReservationObservers(reservation);
-            AddReservationObserver(observer);
         }
 
-        public void AnnulerReservation(Reservation reservation)
+        public Reservation ReserverChambre(Client client, Chambre chambre, DateTime debut, DateTime fin, string numeroCarteCredit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AnnulerReservation(Reservation? reservation, string userId)
         {
             if (reservation == null || reservation.ChambreReservee.Etat == false)
-            if (reservation == null || !reservation.StatutPaiement)
+                if (reservation == null || !reservation.StatutPaiement)
 
-            {
-                throw new InvalidOperationException("La réservation est déjà annulée ou n'existe pas.");
-            }
+                {
+                    throw new InvalidOperationException("La réservation est déjà annulée ou n'existe pas.");
+                }
 
-                if (!_authentificationService.IsReceptionniste())
+            if (!_authentificationService.IsReceptionniste(userId))
             {
                  throw new UnauthorizedAccessException("Seul le réceptionniste peut annuler une réservation.");
             }
@@ -140,7 +158,7 @@ namespace GestionHotel.Apis.Services
             }
             else if (differenceJours.TotalDays > 1)
             {
-                 _paiementService.ProcessRefund(reservation.Client, reservation.Montant * 0.5);
+                 _paiementService.ProcessRefund(reservation.Client, reservation.Montant * 0.5m);
             }
             else if (differenceJours.TotalHours < 24)
             {
@@ -151,7 +169,6 @@ namespace GestionHotel.Apis.Services
              _reservationRepository.UpdateReservation(reservation);
              // Notifier les observateurs de l'annulation de la réservation
              NotifyReservationObservers(reservation);
-             AddReservationObserver(observer);
         }
      }
 }

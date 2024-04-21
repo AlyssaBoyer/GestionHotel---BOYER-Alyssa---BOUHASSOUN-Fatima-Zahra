@@ -7,5 +7,6 @@ namespace GestionHotel.Apis.Services.Interfaces
     {
         List<Chambre> GetChambresANettoyer();
         void MarquerChambreCommeNettoyee(int chambreId);
+        void MarquerChambrePourNettoyage(int chambreId);
     }
 }

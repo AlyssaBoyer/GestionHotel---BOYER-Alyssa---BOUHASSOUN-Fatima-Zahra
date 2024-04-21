@@ -1,5 +1,4 @@
 using GestionHotel.Apis.Models;
-using GestionHotel.Models;
 
 namespace GestionHotel.Apis.Services.Interfaces
 {

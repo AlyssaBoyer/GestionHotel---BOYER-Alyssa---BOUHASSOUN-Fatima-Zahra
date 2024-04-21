@@ -1,56 +1,73 @@
-# Système de Gestion d'Hôtel
+Application de Gestion d'Hôtel
+Cette application est une solution complète de gestion d'un hôtel, offrant des fonctionnalités telles que la réservation de chambres, la gestion des clients, le traitement des paiements et bien plus encore.
 
-Ce projet a pour objectif de développer une application API web en C# pour la gestion d'un hôtel, couvrant divers aspects comme la réservation de chambres, la gestion des clients, le personnel et les services de l'hôtel.
+Prérequis
+Avant d'exécuter l'application, assurez-vous d'avoir installé les éléments suivants :
 
-L'objectif est d'appliquer les concepts de programmation orientée objet, les patterns d'architecture et de conception, et de développer une application fonctionnelle et sécurisée.
+.NET Core SDK
+Visual Studio Code (ou tout autre éditeur de code de votre choix)
+Comment exécuter l'application
+Clonez ce dépôt sur votre machine locale :
+bash
+Copy code
+git clone https://github.com/votre-utilisateur/gestion-hotel.git
+Accédez au répertoire de l'application :
+bash
+Copy code
+cd gestion-hotel
+Ouvrez le projet dans votre éditeur de code :
+css
+Copy code
+code .
+Exécutez l'application à l'aide de la commande suivante dans un terminal :
+arduino
+Copy code
+dotnet run
+Une fois l'application démarrée, vous pouvez accéder à l'API via l'URL suivante dans votre navigateur :
+arduino
+Copy code
+https://localhost:5001
+Exemples d'utilisation
+Créer une réservation de chambre
+Pour créer une réservation de chambre, vous pouvez utiliser l'API REST avec un client HTTP ou une application telle que Postman. Voici un exemple de requête POST pour créer une réservation :
 
-## Fonctionnalités Attendues
+bash
+Copy code
+POST https://localhost:5001/api/reservations
 
-### Client
-- **Liste des chambres disponibles** : Obtenir la liste des chambres disponibles à une plage de dates donnée.
-- **Réservation de chambre** : Réserver une chambre sur cette plage de date, si elle est disponible, avec possibilité de paiement (numéro de carte bleue, appel à un faux service de paiement).
-  - Une chambre a un tarif
-  - Une chambre peux accueillir un nombre de personnes
-  - Une chambre a un type (simple, double, suite...), qui définit son tarif
-  - Un client peut réserver plusieurs chambres selon leur nombre
-- **Annulation de réservation** : Annuler sa réservation avec gestion de remboursement sous conditions.
-- **Notification pré-séjour** : Optionnel - Recevoir une notification (email/SMS) un jour avant la date du séjour.
+{
+  "client": {
+    "nom": "Doe",
+    "prenom": "John",
+    "email": "john.doe@example.com",
+    "numeroTelephone": "123456789"
+  },
+  "chambreId": 1,
+  "dateDebut": "2024-05-01",
+  "dateFin": "2024-05-05",
+  "numeroCarteCredit": "1234-5678-9012-3456",
+  "username": "john.doe",
+  "password": "motdepasse"
+}
+Assurez-vous de remplacer les valeurs des champs avec les données appropriées.
 
-### Réceptionniste
-- Mêmes fonctionnalités que le client, avec plus d'informations ou de droits:
-  - **Liste des chambre disponibles** : Obtenir la liste des chambres disponibles à une plage de dates donnée, avec une information sur l'état général de la chambre (Neuf, Refaite, A refaire, Rien a signaler, Gros dégats).
-  - **Annulation de réservation** : Annuler une réservation pour un client, si l'annulation à lieu moins de 48 heures avant la date de réservation, la receptionniste peut choisir de rembourser ou non le client, malgè la règle de base.
-- **Gestion de l'arrivée** : Noter l'occupation de la chambre et gérer les paiements non effectués.
-- **Gestion du départ** : Marquer la chambre pour nettoyage et gérer les paiements restants.
-- **Envoi d'email post-séjour** : Optionel - Envoyer un email type "donnez votre avis" après le départ du client.
+Vérifier la disponibilité d'une chambre
+Pour vérifier la disponibilité d'une chambre pour une période donnée, vous pouvez utiliser l'API REST avec une requête GET. Voici un exemple de requête pour vérifier la disponibilité :
 
-### Personnel de Ménage
-- **Liste des chambres à nettoyer** : Accéder à la liste des chambres à nettoyer, avec priorisation (une chambre déjà nettoyé et non occupée depuis n'est pas à nettoyer).
-- **Marquage des chambres nettoyées** : Noter une chambre comme nettoyée.
-- **Notification de casse** : Optionel - Signaler des dommages pour ajustement des frais de paiement.
+bash
+Copy code
+GET https://localhost:5001/api/chambres/1/disponible?debut=2024-06-01&fin=2024-06-10
+Assurez-vous de remplacer l'ID de la chambre et les dates de début et de fin avec les valeurs appropriées.
 
-## Règles Associées
-- Les annulations faites moins de 48 heures avant la date de réservation ne seront pas remboursées.
-- Les fonctionnalités optionnelles sont encouragées pour les étudiants désirant aller au-delà des exigences de base.
-- L'authentification et la gestion des rôles doivent être implémentées pour différencier les acteurs.
+Contribution
+Les contributions sont les bienvenues ! Si vous souhaitez contribuer à ce projet, veuillez suivre ces étapes :
 
-## Critères d'Évaluation
-- **Architecture et Conception** : Application correcte des patterns d'architecture et de conception discutés en cours.
-- **Qualité du Code** : Respect des principes SOLID, respect des principes objets (encapsulation, héritage, composition...).
-- **Fonctionnalité** : L'application doit fonctionner comme spécifié, gérer correctement les erreurs et être sécurisée.
-- **Documentation** : Un rapport expliquant les choix d'architecture, les défis rencontrés et les solutions adoptées.
-- **Optionel** : Tests unitaires, micro services...
+Forker le projet
+Créer une branche pour votre fonctionnalité (git checkout -b fonctionnalite/NomDeLaFonctionnalite)
+Valider les modifications (git commit -m "Ajouter une nouvelle fonctionnalité")
+Pousser vers la branche (git push origin fonctionnalite/NomDeLaFonctionnalite)
+Ouvrir une demande de fusion
+Merci de contribuer à améliorer ce projet !
 
-## Non évalué
-- **Frontend** : L'application doit être une API web, mais un frontend est optionnel.
-- **Base de Données** : L'application doit utiliser une base de données (ou un systeme de persistance), mais le choix de la base de données est libre.
-- **Authentification** : L'application doit gérer l'authentification, mais le choix de la méthode est libre. Une solution simple de stockage des utilisateurs est suffisante.
-
-## Consignes de Soumission
-- Le code source doit être soumis via un dépôt Git ou un zip envoyé par email avant la date limite spécifiée.
-- Inclure un fichier `README.md` dans votre dépôt, détaillant comment exécuter l'application et des exemples d'utilisation.
-- Soumettre également le rapport de documentation en format PDF.
-
-## Ressources Fournies
-- Une base de projet ASP.Net avec une API controller pour servir d'exemple.
-- Un projet pour simuler des services de paiement. Le contenu de ce projet ne doit pas/peut pas être modifié.
+Auteur
+Ce projet a été développé par Votre Nom.

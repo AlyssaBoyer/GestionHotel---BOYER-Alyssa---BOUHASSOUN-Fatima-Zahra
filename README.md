@@ -1,76 +1,50 @@
-**Application de Gestion d'Hôtel**
-Cette application est une solution complète de gestion d'un hôtel, offrant des fonctionnalités telles que la réservation de chambres, la gestion des clients, le traitement des paiements et bien plus encore.
+# Système de Gestion d'Hôtel - API
 
-**Prérequis**
-Avant d'exécuter l'application, assurez-vous d'avoir installé les éléments suivants :
+Ce projet est une application API web conçue pour la gestion d'un hôtel. Il couvre des fonctionnalités telles que la réservation de chambres, la gestion des clients et du personnel, et les services de l'hôtel.
 
-.NET Core SDK
-Visual Studio Code (ou tout autre éditeur de code de votre choix)
-Comment exécuter l'application
-Clonez ce dépôt sur votre machine locale :
-bash
+## Prérequis
 
-git clone https://github.com/votre-utilisateur/gestion-hotel.git
-Accédez au répertoire de l'application :
-bash
+Avant de commencer, assurez-vous d'avoir les outils suivants installés :
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Git](https://git-scm.com/downloads) pour cloner le projet
+- [Visual Studio](https://visualstudio.microsoft.com/fr/) ou [JetBrains Rider](https://www.jetbrains.com/rider/) (ou un autre IDE compatible avec .NET)
 
-cd gestion-hotel
+## Installation
 
-Ouvrez le projet dans votre éditeur de code :
+1. Clonez le dépôt Git :
+    ```sh
+    git clone https://github.com/AlyssaBoyer/GestionHotel---BOYER-Alyssa---BOUHASSOUN-Fatima-Zahra.git
+    ```
+2. Accédez au répertoire du projet cloné.
 
-code .
+3. Restaurez les packages NuGet :
+    ```sh
+    dotnet restore
+    ```
 
-**Exécutez l'application à l'aide de la commande suivante dans un terminal :**
-arduino
+4. Lancez le projet via l'IDE qui configurera et utilisera IIS Express par défaut, ou via la commande suivante pour un serveur Kestrel :
+    ```sh
+    dotnet run
+    ```
 
-dotnet run
+5. Si vous utilisez Visual Studio ou Rider, assurez-vous que IIS Express est sélectionné comme profil de lancement. Accédez ensuite à `https://localhost:44376/swagger` pour voir l'interface Swagger et tester les endpoints API.
 
-Une fois l'application démarrée, vous pouvez accéder à l'API via l'URL suivante dans votre navigateur :
-arduino
+## Configuration de la Base de Données
 
-https://localhost:5001
-Exemples d'utilisation
-Créer une réservation de chambre
-Pour créer une réservation de chambre, vous pouvez utiliser l'API REST avec un client HTTP ou une application telle que Postman. Voici un exemple de requête POST pour créer une réservation :
+Le projet est configuré pour utiliser une base de données SQLite. Vous devez créer des enregistrements initiaux pour les chambres et les utilisateurs :
 
-bash
+1. Ouvrez la console de gestion de package ou un terminal et exécutez les migrations :
+    ```sh
+    dotnet ef database update
+    ```
 
-POST https://localhost:5001/api/reservations
+2. Utilisez les scripts SQL fournis ou un outil tel que [DB Browser for SQLite](https://sqlitebrowser.org/) pour peupler la base de données avec des données initiales.
 
-{
-  "client": {
-    "nom": "Doe",
-    "prenom": "John",
-    "email": "john.doe@example.com",
-    "numeroTelephone": "123456789"
-  },
-  "chambreId": 1,
-  "dateDebut": "2024-05-01",
-  "dateFin": "2024-05-05",
-  "numeroCarteCredit": "1234-5678-9012-3456",
-  "username": "john.doe",
-  "password": "motdepasse"
-}
+## Utilisation
 
-Assurez-vous de remplacer les valeurs des champs avec les données appropriées.
+L'API est maintenant accessible via l'adresse `https://localhost:44376/api/`. Utilisez Swagger UI pour explorer les différents endpoints et leurs fonctionnalités.
 
-Vérifier la disponibilité d'une chambre
-Pour vérifier la disponibilité d'une chambre pour une période donnée, vous pouvez utiliser l'API REST avec une requête GET. Voici un exemple de requête pour vérifier la disponibilité :
 
-bash
-
-GET https://localhost:5001/api/chambres/1/disponible?debut=2024-06-01&fin=2024-06-10
-Assurez-vous de remplacer l'ID de la chambre et les dates de début et de fin avec les valeurs appropriées.
-
-**Contribution**
-Les contributions sont les bienvenues ! Si vous souhaitez contribuer à ce projet, veuillez suivre ces étapes :
-
-Forker le projet
-
-Créer une branche pour votre fonctionnalité (git checkout -b fonctionnalite/NomDeLaFonctionnalite)
-Valider les modifications (git commit -m "Ajouter une nouvelle fonctionnalité")
-Pousser vers la branche (git push origin fonctionnalite/NomDeLaFonctionnalite)
-Ouvrir une demande de fusion
 
 
 **Auteurs**

@@ -32,7 +32,7 @@ Créer une réservation de chambre
 Pour créer une réservation de chambre, vous pouvez utiliser l'API REST avec un client HTTP ou une application telle que Postman. Voici un exemple de requête POST pour créer une réservation :
 
 bash
-Copy code
+
 POST https://localhost:5001/api/reservations
 
 {

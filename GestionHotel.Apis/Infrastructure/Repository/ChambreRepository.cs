@@ -14,7 +14,7 @@ public class ChambreRepository : IChambreRepository
 
     public Chambre GetChambreById(int id)
     {
-        return _context.Chambre.FirstOrDefault(chambre => chambre.Id == id);
+        return _context.Chambres.FirstOrDefault(chambre => chambre.Id == id);
     }
   
     public bool IsChambreDisponible(int id, DateTime debut, DateTime fin)
@@ -23,5 +23,18 @@ public class ChambreRepository : IChambreRepository
         return !_context.Reservations.Any(reservation => 
             reservation.ChambreReserveeId == id &&
             debut < reservation.DateFin && fin > reservation.DateDebut);
+    }
+    
+    public IEnumerable<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin)
+    {
+        var chambresReservees = _context.Reservations
+            .Where(reservation => debut < reservation.DateFin && fin > reservation.DateDebut)
+            .Select(reservation => reservation.ChambreReserveeId)
+            .Distinct();
+
+        var chambresDisponibles = _context.Chambres
+            .Where(chambre => !chambresReservees.Contains(chambre.Id));
+
+        return chambresDisponibles.ToList();
     }
 }

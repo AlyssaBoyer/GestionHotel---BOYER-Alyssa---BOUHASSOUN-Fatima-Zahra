@@ -4,11 +4,12 @@ namespace GestionHotel.Apis.Services.Interfaces
 {
     public interface IReservationService
     {
-        Reservation ReserverChambre(Client client, Chambre chambre, DateTime debut, DateTime fin, string numeroCarteCredit);
-        void AnnulerReservation(Reservation reservation);
-        List<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin);
-        void AddReservationObserver(IObserver<Reservation> observer);
-        void RemoveReservationObserver(IObserver<Reservation> observer);
-        
+        Reservation ReserverChambre(int clientId, int chambreId, DateTime debut, DateTime fin,
+            string numeroCarteCredit, string username, string password);
+        void AnnulerReservation(Reservation reservation, string userId);
+        Reservation GetReservationById(int id);
+        void GererArrivee(Reservation reservation, string userId);
+        void GererDepart(Reservation reservation, string userId);
+
     }
 }

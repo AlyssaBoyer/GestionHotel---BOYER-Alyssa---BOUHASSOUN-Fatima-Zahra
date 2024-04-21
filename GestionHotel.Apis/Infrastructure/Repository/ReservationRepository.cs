@@ -5,22 +5,28 @@ namespace GestionHotel.Apis.Infrastructure.Repository;
 
 public class ReservationRepository : IReservationRepository
 {
-    // Vous aurez probablement besoin d'une instance de DbContext ici pour accéder à la base de données.
+    private readonly HotelDbContext _context;
 
-    public ReservationRepository(/* DbContext context */)
+    public ReservationRepository(HotelDbContext context)
     {
-        // TODO : Assigner le context à une propriété si nécessaire.
+        _context = context;
     }
 
     public void AddReservation(Reservation reservation)
     {
-        //TODO : Implémentez la logique pour ajouter une nouvelle réservation à la base de données.
+        _context.Reservations.Add(reservation);
+        _context.SaveChanges();
     }
 
     public void UpdateReservation(Reservation reservation)
     {
-        //TODO : Implémentez la logique pour mettre à jour une réservation existante.
+        _context.Reservations.Update(reservation);
+        _context.SaveChanges();
+    }
+    
+    public Reservation GetReservationById(int id)
+    {
+        return _context.Reservations.FirstOrDefault(reservation => reservation.Id == id);
     }
 
-    // Implémentez les autres méthodes définies dans l'interface.
 }

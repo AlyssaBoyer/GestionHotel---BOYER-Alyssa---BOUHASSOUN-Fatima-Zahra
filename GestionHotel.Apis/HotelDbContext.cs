@@ -7,7 +7,7 @@ namespace GestionHotel.Apis;
 
 public class HotelDbContext : DbContext
 {
-    public DbSet<Chambre> Chambre { get; set; }
+    public DbSet<Chambre> Chambres { get; set; }
     public DbSet<Client> Client { get; set; }
     public DbSet<Personne> Personne { get; set; }
     public DbSet<PersonnelMenage> PersonnelMenage { get; set; }

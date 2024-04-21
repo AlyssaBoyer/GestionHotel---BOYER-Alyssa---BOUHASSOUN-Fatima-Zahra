@@ -6,4 +6,5 @@ public interface IReservationRepository
 {
     void AddReservation(Reservation reservation);
     void UpdateReservation(Reservation reservation);
+    Reservation GetReservationById(int id);
 }

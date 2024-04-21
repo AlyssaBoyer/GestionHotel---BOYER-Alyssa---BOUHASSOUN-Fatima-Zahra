@@ -14,6 +14,6 @@ public class ClientRepository : IClientRepository
 
     public Client GetClientById(int id)
     {
-        return _context.Client .FirstOrDefault(chambre => chambre.Id == id);
+        return _context.Client .FirstOrDefault(client => client.Id == id);
     }
 }

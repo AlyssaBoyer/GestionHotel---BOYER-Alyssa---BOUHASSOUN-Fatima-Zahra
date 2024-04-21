@@ -59,9 +59,8 @@ namespace GestionHotel.Apis.Services
             }
         }
         
-        public bool IsReceptionniste(string idReceptionniste) // changer en int apres quand bdd 
+        public bool IsReceptionniste(string idReceptionniste)
         {
-            // Vérifie si le nom est dans l'annuaire des réceptionnistes.
             return annuaireReceptionnistes.ContainsKey(idReceptionniste);
         }
     }

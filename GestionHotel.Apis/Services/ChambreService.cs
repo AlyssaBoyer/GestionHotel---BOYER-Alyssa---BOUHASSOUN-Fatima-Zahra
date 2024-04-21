@@ -23,5 +23,10 @@ namespace GestionHotel.Apis.Services
         {
             return _chambreRepository.IsChambreDisponible(id, debut, fin);
         }
+        
+        public IEnumerable<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin)
+        {
+            return _chambreRepository.GetChambresDisponibles(debut, fin);
+        }
     }
 }

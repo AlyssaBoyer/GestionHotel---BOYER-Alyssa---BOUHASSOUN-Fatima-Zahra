@@ -6,12 +6,14 @@ Avant d'exécuter l'application, assurez-vous d'avoir installé les éléments s
 
 .NET Core SDK
 Visual Studio Code (ou tout autre éditeur de code de votre choix)
-Comment exécuter l'application
+
+**Comment exécuter l'application**
+
 Clonez ce dépôt sur votre machine locale :
 bash
-
 git clone https://github.com/votre-utilisateur/gestion-hotel.git
-Accédez au répertoire de l'application :
+
+**Accédez au répertoire de l'application :**
 bash
 
 cd gestion-hotel

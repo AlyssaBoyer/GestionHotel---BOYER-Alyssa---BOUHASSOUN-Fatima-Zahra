@@ -4,6 +4,7 @@ using GestionHotel.Apis.Infrastructure.Repository;
 using GestionHotel.Apis.Infrastructure.Repository.Interfaces;
 using GestionHotel.Apis.Services;
 using GestionHotel.Apis.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +20,16 @@ builder.Services.AddScoped<IChambreService, ChambreService>();
 builder.Services.AddScoped<IPersonnelMenageService, PersonnelMenageService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IPaiementService, PaiementService>();
 
 // Enregistrez vos repositories si vous en avez créé.
 builder.Services.AddScoped<IChambreRepository, ChambreRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IPersonnelMenageRepository, PersonnelMenageRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
+builder.Services.AddDbContext<HotelDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("HotelDatabase")));
 
 var app = builder.Build();
 

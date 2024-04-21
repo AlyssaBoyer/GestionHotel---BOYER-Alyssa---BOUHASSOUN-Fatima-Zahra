@@ -7,5 +7,6 @@ namespace GestionHotel.Apis.Services
         bool AuthentifierClient(string nom, string motDePasse);
         bool AuthentifierReceptionniste(string nom, string motDePasse);
         bool AuthentifierPersonnelMenage(string nom, string motDePasse);
+        bool IsReceptionniste(string idReceptionniste);
     }
 }

@@ -19,7 +19,6 @@ public class ChambreRepository : IChambreRepository
   
     public bool IsChambreDisponible(int id, DateTime debut, DateTime fin)
     {
-        // Vérifier si une chambre spécifique est disponible pendant une période donnée
         return !_context.Reservations.Any(reservation => 
             reservation.ChambreReserveeId == id &&
             debut < reservation.DateFin && fin > reservation.DateDebut);
@@ -36,5 +35,11 @@ public class ChambreRepository : IChambreRepository
             .Where(chambre => !chambresReservees.Contains(chambre.Id));
 
         return chambresDisponibles.ToList();
+    }
+    
+    public void UpdateChambre(Chambre chambre)
+    {
+        _context.Chambres.Update(chambre);
+        _context.SaveChanges();
     }
 }

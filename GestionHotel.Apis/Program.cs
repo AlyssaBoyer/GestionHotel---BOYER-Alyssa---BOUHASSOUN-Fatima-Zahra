@@ -46,5 +46,8 @@ app.UseHttpsRedirection();
 app.MapChambreEndpoints();
 app.MapReservationEndpoints();
 app.MapCancelReservationEndpoints();
+app.MapArrivalEndpoints();
+app.MapDepartureEndpoints();
+app.MapMenageEndpoints();
 
 app.Run();

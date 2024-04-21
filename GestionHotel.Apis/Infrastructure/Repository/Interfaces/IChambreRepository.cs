@@ -8,5 +8,6 @@ public interface IChambreRepository
     
     Boolean IsChambreDisponible(int id, DateTime debut, DateTime fin);
     IEnumerable<Chambre> GetChambresDisponibles(DateTime debut, DateTime fin);
+    void UpdateChambre(Chambre chambre);
 
 }

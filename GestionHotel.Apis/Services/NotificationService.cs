@@ -20,7 +20,6 @@ namespace GestionHotel.Apis.Services
 
             using (var clientSmtp = new SmtpClient())
             {
-                // Assurez-vous que les informations de connexion sont sécurisées et ne sont pas codées en dur
                 clientSmtp.Connect("smtp.example.com", 587, false);
                 clientSmtp.Authenticate("username", "password");
                 clientSmtp.Send(message);

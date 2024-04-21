@@ -105,11 +105,9 @@ namespace GestionHotel.Apis.Services
             reservation.EstAnnulee = true;
             _reservationRepository.UpdateReservation(reservation);
 
-            // Notifier les observateurs de l'annulation de la réservation
             NotifyReservationObservers(reservation);
         }
 
-        // Méthode pour notifier les observateurs lorsqu'un événement pertinent se produit
         private void NotifyReservationObservers(Reservation reservation)
         {
             foreach (var observer in _reservationObservers)
@@ -130,7 +128,7 @@ namespace GestionHotel.Apis.Services
             return montantTotal;
         }
 
-        public void GererArrivee(Reservation reservation, string userId)
+        public void GererArrive2e(Reservation reservation, string userId)
         {
             if (!_authentificationService.IsReceptionniste(userId))
             {
@@ -150,27 +148,91 @@ namespace GestionHotel.Apis.Services
             _reservationRepository.UpdateReservation(reservation);
             NotifyReservationObservers(reservation);
         }
+        
+        public void GererArrivee(int reservationId, string userId)
+        {
+            if (!_authentificationService.IsReceptionniste(userId))
+            {
+                throw new UnauthorizedAccessException("Seul le réceptionniste peut gérer une arrivée.");
+            }
 
-        public void GererDepart(Reservation reservation, string userId)
+            var reservation = _reservationRepository.GetReservationById(reservationId);
+            Chambre chambre = _chambreRepository.GetChambreById(reservation.ChambreReserveeId);
+            Client client = _clientRepository.GetClientById(reservation.ClientId);
+            _menageService.MarquerChambreCommeNettoyee(chambre.Id);
+            
+            if (reservation == null || reservation.EstAnnulee)
+            {
+                throw new InvalidOperationException("La réservation n'existe pas ou est déjà annulée.");
+            }
+
+            if (chambre.Etat != true)
+            {
+                throw new InvalidOperationException("La chambre n'est pas prête pour l'arrivée.");
+            }
+
+            chambre.EstOccupee = true;
+            reservation.DateDebut = DateTime.Now; 
+
+            if (!reservation.StatutPaiement)
+            {
+                if (_paiementService.ProcessPayment(client.NumeroCarteCredit, reservation.Montant))
+                {
+                    reservation.StatutPaiement = true;
+                }
+                else
+                {
+                    throw new Exception("Le paiement n'a pas pu être traité.");
+                }
+            }
+
+            _reservationRepository.UpdateReservation(reservation);
+            _chambreRepository.UpdateChambre(chambre);
+            
+            NotifyReservationObservers(reservation);
+        }
+        
+        public void GererDepart(int reservationId, string userId)
         {
             if (!_authentificationService.IsReceptionniste(userId))
             {
                 throw new UnauthorizedAccessException("Seul le réceptionniste peut gérer le départ.");
             }
 
-            Chambre chambre = _chambreRepository.GetChambreById(reservation.ChambreReserveeId);
+            var reservation = _reservationRepository.GetReservationById(reservationId);
+            if (reservation == null || reservation.EstAnnulee)
+            {
+                throw new InvalidOperationException("La réservation n'existe pas ou est déjà annulée.");
+            }
 
+            Chambre chambre = _chambreRepository.GetChambreById(reservation.ChambreReserveeId);
             _menageService.MarquerChambrePourNettoyage(chambre.Id);
+
+            if (!chambre.EstOccupee)
+            {
+                throw new InvalidOperationException("La chambre n'est pas actuellement occupée.");
+            }
+
             if (!reservation.StatutPaiement)
             {
                 Client client = _clientRepository.GetClientById(reservation.ClientId);
-                _paiementService.ProcessPayment(client.NumeroCarteCredit, reservation.Montant);
+                if (!_paiementService.ProcessPayment(client.NumeroCarteCredit, reservation.Montant))
+                {
+                    throw new Exception("Le paiement n'a pas pu être traité.");
+                }
                 reservation.StatutPaiement = true;
             }
 
+            chambre.EstOccupee = false;
+            chambre.EstANettoyer = true;
+            reservation.DateFin = DateTime.Now; 
+
             _reservationRepository.UpdateReservation(reservation);
+            _chambreRepository.UpdateChambre(chambre);
+
             NotifyReservationObservers(reservation);
         }
+
 
         public Reservation GetReservationById(int id)
         {

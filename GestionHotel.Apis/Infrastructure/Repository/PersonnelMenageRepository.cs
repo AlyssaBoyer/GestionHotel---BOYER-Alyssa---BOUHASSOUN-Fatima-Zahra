@@ -5,35 +5,36 @@ namespace GestionHotel.Apis.Infrastructure.Repository;
 
 public class PersonnelMenageRepository : IPersonnelMenageRepository
 {
-    // Ajoutez les dépendances nécessaires, comme un DbContext si vous utilisez Entity Framework
+    private readonly HotelDbContext _context;
 
-    public PersonnelMenageRepository(/* Dépendances */)
+    public PersonnelMenageRepository(HotelDbContext context)
     {
-        // TODO : Initialisation de vos dépendances
+        _context = context;
     }
 
     public List<Chambre> GetChambresANettoyer()
     {
-        // TODO :Implémentez la logique pour obtenir la liste des chambres à nettoyer
-        List<Chambre> Chambre = new     List<Chambre>();
-        return Chambre;
+        return _context.Chambres.Where(c => c.EstANettoyer && !c.EstNettoyee).ToList();
     }
 
     public void MarquerChambreCommeNettoyee(int chambreId)
     {
-        // TODO : Implémentez la logique pour marquer une chambre comme nettoyée
+        var chambre = _context.Chambres.Find(chambreId);
+        if (chambre != null)
+        {
+            chambre.EstNettoyee = true;
+            chambre.EstANettoyer = false;
+            _context.SaveChanges();
+        }
     }
 
     public void MarquerChambrePourNettoyage(int chambreId)
     {
-        // Obtenez la chambre de la base de données
-        var chambre = new Chambre();/* Méthode pour obtenir la chambre par chambreId */;
-
-        // Marquez-la pour nettoyage
-        chambre.EstANettoyer = true;
-
-        // Sauvegardez les changements dans la base de données
-        /* Code pour sauvegarder les changements dans la chambre */
+        var chambre = _context.Chambres.Find(chambreId);
+        if (chambre != null)
+        {
+            chambre.EstANettoyer = true;
+            _context.SaveChanges();
+        }
     }
-    // Implémentez les autres méthodes définies dans l'interface
 }

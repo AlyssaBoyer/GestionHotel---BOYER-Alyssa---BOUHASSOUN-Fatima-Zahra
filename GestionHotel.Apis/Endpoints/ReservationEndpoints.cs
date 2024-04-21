@@ -41,14 +41,12 @@ public static class ReservationEndpoints
             {
                 try
                 {
-                    // Récupérer la réservation par son ID
                     var reservation = reservationService.GetReservationById(reservationId);
                     if (reservation == null)
                     {
                         return Results.NotFound("Réservation non trouvée.");
                     }
 
-                    // Effectuer l'annulation
                     reservationService.AnnulerReservation(reservation, userId);
                     return Results.Ok("Réservation annulée avec succès.");
                 }
@@ -62,4 +60,45 @@ public static class ReservationEndpoints
                 }
             });
     }
+    
+    public static void MapArrivalEndpoints(this IEndpointRouteBuilder routes)
+    {
+        routes.MapPost("/api/v1/reservations/arrive", (int reservationId, string userId, IReservationService reservationService) =>
+        {
+            try
+            {
+                reservationService.GererArrivee(reservationId, userId);
+                return Results.Ok("Arrivée gérée avec succès.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Results.Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        });
+    }
+    
+    public static void MapDepartureEndpoints(this IEndpointRouteBuilder routes)
+    {
+        routes.MapPost("/api/v1/reservations/depart", (int reservationId, string userId, IReservationService reservationService) =>
+        {
+            try
+            {
+                reservationService.GererDepart(reservationId, userId);
+                return Results.Ok("Départ géré avec succès.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Results.Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        });
+    }
+    
 }

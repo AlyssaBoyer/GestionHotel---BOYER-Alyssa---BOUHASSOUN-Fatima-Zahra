@@ -8,8 +8,8 @@ namespace GestionHotel.Apis.Services.Interfaces
             string numeroCarteCredit, string username, string password);
         void AnnulerReservation(Reservation reservation, string userId);
         Reservation GetReservationById(int id);
-        void GererArrivee(Reservation reservation, string userId);
-        void GererDepart(Reservation reservation, string userId);
+        void GererArrivee(int reservationId, string userId);
+        void GererDepart(int reservationId, string userId);
 
     }
 }

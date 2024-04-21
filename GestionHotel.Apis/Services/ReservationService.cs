@@ -42,7 +42,7 @@ namespace GestionHotel.Apis.Services
                 throw new UnauthorizedAccessException("L'utilisateur n'est pas authentifié.");
             }
 
-            if (!_chambreRepository.IsChambreDisponible(clientId, debut, fin))
+            if (!_chambreRepository.IsChambreDisponible(chambreId, debut, fin))
             {
                 throw new Exception("La chambre n'est pas disponible pour les dates sélectionnées.");
             }
